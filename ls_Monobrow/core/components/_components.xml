@@ -1,0 +1,7 @@
+<Ui xmlns="http://www.blizzard.com/wow/ui/">
+	<Script file="bar.lua"/>
+	<Script file="border.lua"/>
+	<Script file="fader.lua"/>
+	<Script file="font.lua"/>
+	<Script file="segment.lua"/>
+</Ui>
