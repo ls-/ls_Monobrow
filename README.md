@@ -21,6 +21,11 @@ If you found a bug or want to share an idea on how to improve my addon, either u
 
 Feel free to add and/or review translations on [CurseForge](https://www.curseforge.com/wow/addons/ls-monobrow/localization), alternatively, you may create a PR on [project's GitHub page](https://github.com/ls-/ls_Monobrow/pulls).
 
+## FAQ
+
+**`Q:`** How does it even work?
+**`A:`** The addon works in a semi-auto mode. By default, it only shows the xp bar unless you're max level. To track honour, reputation or house xp you need to click "Show as Experience Bar" checkboxes in corresponding UI panels like the reputation panel, the housing dashboard, the PvP panel.
+
 ## License
 
 Please see [LICENSE](https://github.com/ls-/ls_Monobrow/blob/master/LICENSE.txt) file.
