@@ -23,7 +23,7 @@ Feel free to add and/or review translations on [CurseForge](https://www.cursefor
 
 ## FAQ
 
-**`Q:`** How does it even work?
+**`Q:`** How does it even work?  
 **`A:`** The addon works in a semi-auto mode. By default, it only shows the xp bar unless you're max level. To track honour, reputation or house xp you need to click "Show as Experience Bar" checkboxes in corresponding UI panels like the reputation panel, the housing dashboard, the PvP panel.
 
 ## License
