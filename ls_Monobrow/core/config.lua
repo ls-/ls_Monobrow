@@ -115,6 +115,8 @@ function addon:CreateEditModeConfig()
 		LSMonobrow:SetPoint(layout.point.point, layout.point.x, layout.point.y)
 		LSMonobrow:UpdateTextFormat(layout.text.format)
 		LSMonobrow:UpdateTextVisibility(layout.text.always_show)
+
+		addon.Bar:UpdateFading()
 	end
 
 	LEM:RegisterCallback("layout", layoutCallback)
