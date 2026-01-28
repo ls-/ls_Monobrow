@@ -18,6 +18,7 @@ L["AC_TOOLTIP"] = ("|c%1$sClick:|r %2$s\n|c%1$sShift Click:|r %3$s"):format(D.gl
 L["BONUS_XP_TOOLTIP"] = "Bonus XP: |cffffffff%s|r"
 L["CHANGELOG"] = "Changelog"
 L["CHANGELOG_FULL"] = "Full"
+L["COLLAPSE_OPTIONS"] = "Collapse Options"
 L["DOWNLOADS"] = "Downloads"
 L["FADING"] = "Fading"
 L["FONT"] = "Font"

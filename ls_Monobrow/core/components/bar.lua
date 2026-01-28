@@ -131,15 +131,7 @@ do
 
 		local index = 0
 
-		if C_PetBattles.IsInBattle() then
-			local i = C_PetBattles.GetActivePet(Enum.BattlePetOwner.Ally)
-			local level = C_PetBattles.GetLevel(Enum.BattlePetOwner.Ally, i)
-			if level and level < 25 then
-				index = index + 1
-
-				self[index]:UpdatePetXP(i, level)
-			end
-		else
+		if not (C_PetBattles.IsInBattle() or UnitInVehicle("player")) then
 			-- XP
 			if not IsXPUserDisabled() and not IsPlayerAtEffectiveMaxLevel() then
 				index = index + 1
@@ -313,8 +305,6 @@ function addon.Bar:Create()
 	bar:SetScript("OnSizeChanged", bar.OnSizeChanged)
 
 	-- all
-	bar:RegisterEvent("PET_BATTLE_CLOSE")
-	bar:RegisterEvent("PET_BATTLE_OPENING_START")
 	bar:RegisterEvent("PLAYER_UPDATE_RESTING")
 	bar:RegisterEvent("UPDATE_EXHAUSTION")
 	-- honour
@@ -333,16 +323,17 @@ function addon.Bar:Create()
 	bar:RegisterEvent("PLAYER_LEVEL_UP")
 	bar:RegisterEvent("PLAYER_XP_UPDATE")
 	bar:RegisterEvent("UPDATE_EXPANSION_LEVEL")
-	-- pet xp
-	bar:RegisterEvent("PET_BATTLE_LEVEL_CHANGED")
-	bar:RegisterEvent("PET_BATTLE_PET_CHANGED")
-	bar:RegisterEvent("PET_BATTLE_XP_CHANGED")
 	-- rep
 	bar:RegisterEvent("UPDATE_FACTION")
 	-- house xp
 	bar:RegisterEvent("HOUSE_LEVEL_FAVOR_UPDATED")
 	bar:RegisterEvent("PLAYER_HOUSE_LIST_UPDATED")
 	bar:RegisterEvent("TRACKED_HOUSE_CHANGED")
+	-- state / visibility
+	bar:RegisterEvent("PET_BATTLE_CLOSE")
+	bar:RegisterEvent("PET_BATTLE_OPENING_START")
+	bar:RegisterUnitEvent("UNIT_ENTERED_VEHICLE", "player")
+	bar:RegisterUnitEvent("UNIT_EXITED_VEHICLE", "player")
 
 	return bar
 end

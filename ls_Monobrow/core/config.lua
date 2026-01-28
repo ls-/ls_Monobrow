@@ -10,7 +10,7 @@ local next = _G.next
 local s_format = _G.string.format
 
 -- Mine
-local LEM = LibStub("LibEditMode")
+local LEM = LibStub("LibEditMode-ls", true) or LibStub("LibEditMode")
 
 -- move these elsehwere
 local CL_LINK = "https://github.com/ls-/ls_Monobrow/blob/master/CHANGELOG.md"
@@ -106,7 +106,7 @@ function addon:CreateEditModeConfig()
 
 	LEM:AddFrame(LSMonobrow, onPositionChanged, D.profile.layouts["*"].point, L["LS_MONOBROW"])
 
-	local function layoutCallback(layoutName)
+	LEM:RegisterCallback("layout", function(layoutName)
 		-- AceDB takes care of layout table duplication
 		local layout = C.db.profile.layouts[layoutName]
 
@@ -117,14 +117,23 @@ function addon:CreateEditModeConfig()
 		LSMonobrow:UpdateTextVisibility(layout.text.always_show)
 
 		addon.Bar:UpdateFading()
-	end
+	end)
 
-	LEM:RegisterCallback("layout", layoutCallback)
+	LEM:RegisterCallback("create", function(newLayoutName, _, sourceLayoutName)
+		if sourceLayoutName then
+			addon:CopyTable(C.db.profile.layouts[sourceLayoutName], C.db.profile.layouts[newLayoutName])
+		end
+	end)
 
-	local name = LEM:GetActiveLayoutName()
-	if name then
-		layoutCallback(name)
-	end
+	LEM:RegisterCallback("delete", function(oldLayoutName)
+		C.db.profile.layouts[oldLayoutName] = nil
+	end)
+
+	LEM:RegisterCallback("rename", function(oldLayoutName, newLayoutName)
+		addon:CopyTable(C.db.profile.layouts[oldLayoutName], C.db.profile.layouts[newLayoutName])
+
+		C.db.profile.layouts[oldLayoutName] = nil
+	end)
 
 	LEM:RegisterCallback("enter", function()
 		LSMonobrow.isEditing = true
@@ -153,7 +162,7 @@ function addon:CreateEditModeConfig()
 					LSMonobrow:UpdateSize(value, C.db.profile.layouts[layoutName].height)
 				end
 			end,
-			minValue = 512,
+			minValue = 384,
 			maxValue = m_ceil(GetScreenWidth()),
 			valueStep = 2,
 		},
@@ -178,10 +187,16 @@ function addon:CreateEditModeConfig()
 		{
 			name = _G.LOCALE_TEXT_LABEL,
 			kind = LEM.SettingType.Divider,
+			hidden = function()
+				return not C.db.global.settings.text
+			end,
 		},
 		{
 			name = _G.HUD_EDIT_MODE_SETTING_MINIMAP_SIZE,
 			kind = LEM.SettingType.Slider,
+			hidden = function()
+				return not C.db.global.settings.text
+			end,
 			default = D.profile.layouts["*"].font.size,
 			get = function(layoutName)
 				return C.db.profile.layouts[layoutName].font.size
@@ -200,6 +215,9 @@ function addon:CreateEditModeConfig()
 		{
 			name = _G.FORMATTING,
 			kind = LEM.SettingType.Dropdown,
+			hidden = function()
+				return not C.db.global.settings.text
+			end,
 			default = D.profile.layouts["*"].text.format,
 			get = function(layoutName)
 				return C.db.profile.layouts[layoutName].text.format
@@ -227,6 +245,9 @@ function addon:CreateEditModeConfig()
 		{
 			name = _G.BATTLEFIELD_MINIMAP_SHOW_ALWAYS,
 			kind = LEM.SettingType.Checkbox,
+			hidden = function()
+				return not C.db.global.settings.text
+			end,
 			default = D.profile.layouts["*"].text.always_show,
 			get = function(layoutName)
 				return C.db.profile.layouts[layoutName].text.always_show
@@ -240,12 +261,34 @@ function addon:CreateEditModeConfig()
 			end,
 		},
 		{
+			name = "DNT Text Settings Expander",
+			kind = LEM.SettingType.Expander,
+			expandedLabel = L["COLLAPSE_OPTIONS"],
+			collapsedLabel = _G.LOCALE_TEXT_LABEL,
+			appendArrow = true,
+			default = function()
+				return D.global.settings.text
+			end,
+			get = function()
+				return C.db.global.settings.text
+			end,
+			set = function(_, value)
+				C.db.global.settings.text = value
+			end,
+		},
+		{
 			name = L["FADING"],
 			kind = LEM.SettingType.Divider,
+			hidden = function()
+				return not C.db.global.settings.fade
+			end,
 		},
 		{
 			name = _G.ENABLE,
 			kind = LEM.SettingType.Checkbox,
+			hidden = function()
+				return not C.db.global.settings.fade
+			end,
 			default = D.profile.layouts["*"].fade.enabled,
 			get = function(layoutName)
 				return C.db.profile.layouts[layoutName].fade.enabled
@@ -256,18 +299,17 @@ function addon:CreateEditModeConfig()
 
 					addon.Bar:UpdateFading()
 				end
-
-				if value then
-					LEM:EnableFrameSetting(LSMonobrow, L["MIN_ALPHA"])
-				else
-					LEM:DisableFrameSetting(LSMonobrow, L["MIN_ALPHA"])
-				end
 			end,
 		},
 		{
 			name = L["MIN_ALPHA"],
 			kind = LEM.SettingType.Slider,
-			disabled = not C.db.profile.layouts[LEM:GetActiveLayoutName()].fade.enabled,
+			disabled = function(layoutName)
+				return not C.db.profile.layouts[layoutName].fade.enabled
+			end,
+			hidden = function()
+				return not C.db.global.settings.fade
+			end,
 			default = D.profile.layouts["*"].fade.min_alpha,
 			get = function(layoutName)
 				return C.db.profile.layouts[layoutName].fade.min_alpha
@@ -285,6 +327,22 @@ function addon:CreateEditModeConfig()
 			minValue = 0,
 			maxValue = 0.75,
 			valueStep = 0.05,
+		},
+		{
+			name = "DNT Fade Settings Expander",
+			kind = LEM.SettingType.Expander,
+			expandedLabel = L["COLLAPSE_OPTIONS"],
+			collapsedLabel = L["FADING"],
+			appendArrow = true,
+			default = function()
+				return D.global.settings.fade
+			end,
+			get = function()
+				return C.db.global.settings.fade
+			end,
+			set = function(_, value)
+				C.db.global.settings.fade = value
+			end,
 		},
 	})
 

@@ -6,7 +6,7 @@ local _G = getfenv(0)
 local ipairs = _G.ipairs
 
 -- Mine
-local LEM = LibStub("LibEditMode")
+local LEM = LibStub("LibEditMode-ls", true) or LibStub("LibEditMode")
 
 function addon:GetLayout()
 	return C.db.profile.layouts[LEM:GetActiveLayoutName() or "Modern"]
@@ -88,6 +88,10 @@ D.global = {
 			size = 2,
 		},
 	},
+	settings = { -- used by expanders
+		text = false,
+		fade = false,
+	},
 }
 
 D.profile = {
@@ -116,7 +120,7 @@ D.profile = {
 			},
 			fade = {
 				enabled = false,
-				min_alpha = 0.2,
+				min_alpha = 0.25,
 			},
 			point = {point = "BOTTOM", x = 0, y = 4},
 		},

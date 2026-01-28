@@ -97,6 +97,28 @@ do
 	end
 end
 
+------------
+-- TABLES --
+------------
+
+function addon:CopyTable(src, dest, ignore)
+	if type(dest) ~= "table" then
+		dest = {}
+	end
+
+	for k, v in next, src do
+		if not ignore or not ignore[k] then
+			if type(v) == "table" then
+				dest[k] = self:CopyTable(v, dest[k])
+			else
+				dest[k] = v
+			end
+		end
+	end
+
+	return dest
+end
+
 -----------
 -- MATHS --
 -----------

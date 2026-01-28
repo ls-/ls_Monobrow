@@ -11,6 +11,7 @@ if GetLocale() ~= "ruRU" then return end
 L["BONUS_XP_TOOLTIP"] = "Дополнительный опыт: |cffffffff%s|r"
 L["CHANGELOG"] = "Список изменений"
 L["CHANGELOG_FULL"] = "Полный"
+L["COLLAPSE_OPTIONS"] = "Свернуть настройки"
 L["DOWNLOADS"] = "Загрузки"
 L["FADING"] = "Затухание"
 L["FONT"] = "Шрифт"

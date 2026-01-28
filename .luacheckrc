@@ -89,6 +89,7 @@ read_globals = {
 	"UnitHonor",
 	"UnitHonorLevel",
 	"UnitHonorMax",
+	"UnitInVehicle",
 	"UnitLevel",
 	"UnitSex",
 	"UnitXP",
