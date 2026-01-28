@@ -106,7 +106,7 @@ function addon:CreateEditModeConfig()
 
 	LEM:AddFrame(LSMonobrow, onPositionChanged, D.profile.layouts["*"].point, L["LS_MONOBROW"])
 
-	local function layoutCallback(layoutName)
+	LEM:RegisterCallback("layout", function(layoutName)
 		-- AceDB takes care of layout table duplication
 		local layout = C.db.profile.layouts[layoutName]
 
@@ -117,14 +117,23 @@ function addon:CreateEditModeConfig()
 		LSMonobrow:UpdateTextVisibility(layout.text.always_show)
 
 		addon.Bar:UpdateFading()
-	end
+	end)
 
-	LEM:RegisterCallback("layout", layoutCallback)
+	LEM:RegisterCallback("create", function(newLayoutName, _, sourceLayoutName)
+		if sourceLayoutName then
+			addon:CopyTable(C.db.profile.layouts[sourceLayoutName], C.db.profile.layouts[newLayoutName])
+		end
+	end)
 
-	local name = LEM:GetActiveLayoutName()
-	if name then
-		layoutCallback(name)
-	end
+	LEM:RegisterCallback("delete", function(oldLayoutName)
+		C.db.profile.layouts[oldLayoutName] = nil
+	end)
+
+	LEM:RegisterCallback("rename", function(oldLayoutName, newLayoutName)
+		addon:CopyTable(C.db.profile.layouts[oldLayoutName], C.db.profile.layouts[newLayoutName])
+
+		C.db.profile.layouts[oldLayoutName] = nil
+	end)
 
 	LEM:RegisterCallback("enter", function()
 		LSMonobrow.isEditing = true
