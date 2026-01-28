@@ -286,19 +286,6 @@ do
 		self:Update(cur - min, max - min, 0, C.db.global.colors.house)
 	end
 
-	function segment_ext_proto:UpdatePetXP(i, level)
-		local name = C_PetBattles.GetName(1, i)
-		local rarity = C_PetBattles.GetBreedQuality(1, i)
-		local cur, max = C_PetBattles.GetXP(1, i)
-
-		self.tooltipInfo = {
-			header = ITEM_QUALITY_COLORS[rarity].color:WrapTextInColorCode(name),
-			line1 = L["LEVEL_TOOLTIP"]:format(level),
-		}
-
-		self:Update(cur, max, 0, C.db.global.colors.xp[2])
-	end
-
 	function segment_ext_proto:UpdateDummy()
 		self.tooltipInfo = nil
 
