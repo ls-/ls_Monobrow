@@ -162,7 +162,7 @@ function addon:CreateEditModeConfig()
 					LSMonobrow:UpdateSize(value, C.db.profile.layouts[layoutName].height)
 				end
 			end,
-			minValue = 512,
+			minValue = 384,
 			maxValue = m_ceil(GetScreenWidth()),
 			valueStep = 2,
 		},
