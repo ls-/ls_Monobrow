@@ -1,6 +1,6 @@
 ## Interface: 120000, 120001
 ## Author: lightspark
-## Version: 120000.02
+## Version: 120000.03
 ## Title: LS: |cff1fcecbMonobrow|r
 ## Notes: Just like your eyebrows it's all in one!
 ## IconTexture: Interface\AddOns\ls_Monobrow\assets\logo-64
