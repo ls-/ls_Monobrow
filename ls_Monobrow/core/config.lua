@@ -266,9 +266,7 @@ function addon:CreateEditModeConfig()
 			expandedLabel = L["COLLAPSE_OPTIONS"],
 			collapsedLabel = _G.LOCALE_TEXT_LABEL,
 			appendArrow = true,
-			default = function()
-				return D.global.settings.text
-			end,
+			default = D.global.settings.text,
 			get = function()
 				return C.db.global.settings.text
 			end,
@@ -378,9 +376,7 @@ function addon:CreateEditModeConfig()
 			expandedLabel = L["COLLAPSE_OPTIONS"],
 			collapsedLabel = L["FADING"],
 			appendArrow = true,
-			default = function()
-				return D.global.settings.fade
-			end,
+			default = D.global.settings.fade,
 			get = function()
 				return C.db.global.settings.fade
 			end,
