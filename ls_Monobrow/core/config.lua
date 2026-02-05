@@ -110,13 +110,13 @@ function addon:CreateEditModeConfig()
 		-- AceDB takes care of layout table duplication
 		local layout = C.db.profile.layouts[layoutName]
 
+		addon.Bar:UpdateFading()
+
 		LSMonobrow:UpdateSize(layout.width, layout.height)
 		LSMonobrow:ClearAllPoints()
 		LSMonobrow:SetPoint(layout.point.point, layout.point.x, layout.point.y)
 		LSMonobrow:UpdateTextFormat(layout.text.format)
 		LSMonobrow:UpdateTextVisibility(layout.text.always_show)
-
-		addon.Bar:UpdateFading()
 	end)
 
 	LEM:RegisterCallback("create", function(newLayoutName, _, sourceLayoutName)
@@ -296,6 +296,50 @@ function addon:CreateEditModeConfig()
 			set = function(layoutName, value)
 				if C.db.profile.layouts[layoutName].fade.enabled ~= value then
 					C.db.profile.layouts[layoutName].fade.enabled = value
+
+					addon.Bar:UpdateFading()
+				end
+			end,
+		},
+		{
+			name = _G.COMBAT,
+			desc = L["FADING_COMBAT_DESC"],
+			kind = LEM.SettingType.Checkbox,
+			hidden = function()
+				return not C.db.global.settings.fade
+			end,
+			disabled = function(layoutName)
+				return not C.db.profile.layouts[layoutName].fade.enabled
+			end,
+			default = D.profile.layouts["*"].fade.combat,
+			get = function(layoutName)
+				return C.db.profile.layouts[layoutName].fade.combat
+			end,
+			set = function(layoutName, value)
+				if C.db.profile.layouts[layoutName].fade.combat ~= value then
+					C.db.profile.layouts[layoutName].fade.combat = value
+
+					addon.Bar:UpdateFading()
+				end
+			end,
+		},
+		{
+			name = _G.TARGET,
+			desc = L["FADING_TARGET_DESC"],
+			kind = LEM.SettingType.Checkbox,
+			hidden = function()
+				return not C.db.global.settings.fade
+			end,
+			disabled = function(layoutName)
+				return not C.db.profile.layouts[layoutName].fade.enabled
+			end,
+			default = D.profile.layouts["*"].fade.target,
+			get = function(layoutName)
+				return C.db.profile.layouts[layoutName].fade.target
+			end,
+			set = function(layoutName, value)
+				if C.db.profile.layouts[layoutName].fade.target ~= value then
+					C.db.profile.layouts[layoutName].fade.target = value
 
 					addon.Bar:UpdateFading()
 				end

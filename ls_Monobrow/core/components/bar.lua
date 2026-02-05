@@ -200,11 +200,11 @@ do
 				end
 			end
 
-			-- ! FADE!
 			if index == 0 then
-				self:Hide()
+				addon.Fader:FadeOut(self)
 			else
 				self:Show()
+				addon.Fader:FadeIn(self, addon.Bar.UpdateFading)
 			end
 
 			self.total = index
@@ -339,11 +339,27 @@ function addon.Bar:Create()
 end
 
 function addon.Bar:UpdateFading()
-	addon.Fader:Unwatch(LSMonobrow)
-
 	local config = addon:GetLayout()
 	if config.fade.enabled then
-		addon.Fader:Watch(LSMonobrow, config.fade.min_alpha)
+		if config.fade.combat then
+			addon.Fader:WatchCombat(LSMonobrow, config.fade.min_alpha)
+		else
+			addon.Fader:UnwatchCombat(LSMonobrow)
+		end
+
+		if config.fade.target then
+			addon.Fader:WatchTarget(LSMonobrow, config.fade.min_alpha)
+		else
+			addon.Fader:UnwatchTarget(LSMonobrow)
+		end
+
+		if addon.Fader:CanHover(LSMonobrow) then
+			addon.Fader:WatchHover(LSMonobrow, config.fade.min_alpha)
+		end
+	else
+		addon.Fader:UnwatchCombat(LSMonobrow)
+		addon.Fader:UnwatchTarget(LSMonobrow)
+		addon.Fader:UnwatchHover(LSMonobrow)
 	end
 end
 
