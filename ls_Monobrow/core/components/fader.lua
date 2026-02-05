@@ -29,6 +29,8 @@ local OUT_DELAY = 1
 
 local fader = CreateFrame("Frame", "LSMonobrowFader")
 local fadeObjects = {}
+local combatObjects = {}
+local targetObjects = {}
 local add, remove
 
 local function fader_OnUpdate(_, elapsed)
@@ -43,16 +45,105 @@ local function fader_OnUpdate(_, elapsed)
 				remove(object)
 
 				object:SetAlpha(data.finalAlpha)
+
+				if data.callback then
+					data.callback(object)
+				end
 			end
 		end
 	end
 end
 
-function add(mode, object, delay, duration, toAlpha)
+fader:SetScript("OnEvent", function(self, event)
+	if event == "PLAYER_REGEN_DISABLED" then
+		for object in next, combatObjects do
+			combatObjects[object].inCombat = true
+
+			addon.Fader:UnwatchHover(object)
+		end
+	elseif event == "PLAYER_REGEN_ENABLED" then
+		for object, data in next, combatObjects do
+			combatObjects[object].inCombat = false
+
+			if addon.Fader:CanHover(object) then
+				addon.Fader:WatchHover(object, data.minAlpha)
+			end
+		end
+	elseif event == "PLAYER_TARGET_CHANGED" or event == "PLAYER_FOCUS_CHANGED" then
+		if UnitExists("target") or UnitExists("focus") then
+			if not self.hasTarget then
+				for object in next, targetObjects do
+					targetObjects[object].hasTarget = true
+
+					addon.Fader:UnwatchHover(object)
+				end
+
+				self.hasTarget = true
+			end
+		else
+			if self.hasTarget or self.hasTarget == nil then
+				for object, data in next, targetObjects do
+					targetObjects[object].hasTarget = false
+
+					if addon.Fader:CanHover(object) then
+						addon.Fader:WatchHover(object, data.minAlpha)
+					end
+				end
+
+				self.hasTarget = false
+			end
+		end
+	end
+end)
+
+function addon.Fader:WatchCombat(object, minAlpha)
+	combatObjects[object] = {
+		inCombat = InCombatLockdown(),
+		minAlpha = minAlpha,
+	}
+
+	fader:RegisterEvent("PLAYER_REGEN_ENABLED")
+	fader:RegisterEvent("PLAYER_REGEN_DISABLED")
+end
+
+function addon.Fader:UnwatchCombat(object)
+	combatObjects[object] = nil
+
+	if not next(combatObjects) then
+		fader:UnregisterEvent("PLAYER_REGEN_ENABLED")
+		fader:UnregisterEvent("PLAYER_REGEN_DISABLED")
+	end
+end
+
+function addon.Fader:WatchTarget(object, minAlpha)
+	targetObjects[object] = {
+		hasTarget = UnitExists("target") or UnitExists("focus"),
+		minAlpha = minAlpha,
+	}
+
+	fader:RegisterEvent("PLAYER_TARGET_CHANGED")
+	fader:RegisterEvent("PLAYER_FOCUS_CHANGED")
+end
+
+function addon.Fader:UnwatchTarget(object)
+	targetObjects[object] = nil
+
+	if not next(targetObjects) then
+		fader:UnregisterEvent("PLAYER_TARGET_CHANGED")
+		fader:UnregisterEvent("PLAYER_FOCUS_CHANGED")
+	end
+end
+
+
+function add(mode, object, delay, duration, toAlpha, callback)
 	local initAlpha = object:GetAlpha()
 	local finalAlpha = mode == FADE_IN and 1 or toAlpha
 
 	if delay == 0 and (duration == 0 or initAlpha == finalAlpha) then
+		if callback then
+			callback(object)
+		end
+
 		return
 	end
 
@@ -62,6 +153,7 @@ function add(mode, object, delay, duration, toAlpha)
 		-- initAlpha = initAlpha,
 		finalAlpha = finalAlpha,
 		duration = duration,
+		callback = callback,
 	}
 
 	if not fader:GetScript("OnUpdate") then
@@ -81,25 +173,25 @@ local hoverer = CreateFrame("Frame", "LSMonobrowHoverer")
 local hoverObjects = {}
 
 local function hoverer_OnUpdate()
-	for object, state in next, hoverObjects do
+	for object, data in next, hoverObjects do
 		if object:IsShown() then
 			local isMouseOver = object:IsMouseOver(4, -4, -4, 4)
 			-- fading in is the priority
-			if isMouseOver ~= state.isMouseOver and (isMouseOver or not fadeObjects[object]) then
+			if isMouseOver ~= data.isMouseOver and (isMouseOver or not fadeObjects[object]) then
 				hoverObjects[object].isMouseOver = isMouseOver
 
 				if isMouseOver then
 					remove(object)
 					add(FADE_IN, object, 0, DURATION * (1 - object:GetAlpha()))
 				else
-					add(FADE_OUT, object, OUT_DELAY, DURATION, state.minAlpha)
+					add(FADE_OUT, object, OUT_DELAY, DURATION, data.minAlpha)
 				end
 			end
 		end
 	end
 end
 
-function addon.Fader:Watch(object, minAlpha)
+function addon.Fader:WatchHover(object, minAlpha)
 	hoverObjects[object] = {
 		isMouseOver = true,
 		minAlpha = minAlpha
@@ -110,7 +202,7 @@ function addon.Fader:Watch(object, minAlpha)
 	end
 end
 
-function addon.Fader:Unwatch(object)
+function addon.Fader:UnwatchHover(object)
 	hoverObjects[object] = nil
 
 	remove(object)
@@ -119,4 +211,26 @@ function addon.Fader:Unwatch(object)
 	if not next(hoverObjects) then
 		hoverer:SetScript("OnUpdate", nil)
 	end
+end
+
+function addon.Fader:CanHover(object)
+	return not ((combatObjects[object] and combatObjects[object].inCombat) or (targetObjects[object] and targetObjects[object].hasTarget))
+end
+
+function addon.Fader:FadeIn(object, callback)
+	addon.Fader:UnwatchCombat(object)
+	addon.Fader:UnwatchTarget(object)
+	addon.Fader:UnwatchHover(object)
+
+	remove(object)
+	add(FADE_IN, object, 0, DURATION, 1, callback)
+end
+
+function addon.Fader:FadeOut(object)
+	addon.Fader:UnwatchCombat(object)
+	addon.Fader:UnwatchTarget(object)
+	addon.Fader:UnwatchHover(object)
+
+	remove(object)
+	add(FADE_OUT, object, 0, DURATION, 0, object.Hide)
 end

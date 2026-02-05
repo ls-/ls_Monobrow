@@ -120,6 +120,8 @@ D.profile = {
 			},
 			fade = {
 				enabled = false,
+				combat = false,
+				target = false,
 				min_alpha = 0.25,
 			},
 			point = {point = "BOTTOM", x = 0, y = 4},
