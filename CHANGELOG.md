@@ -1,5 +1,9 @@
 # CHANGELOG
 
+## Version 120000.04
+
+- Added options to fade in the monobar on entering combat and/or acquiring a target.
+
 ## Version 120000.03
 
 - Added proper handling of Edit Mode layout copying, removal, and deletion.
