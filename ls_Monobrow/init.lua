@@ -79,6 +79,7 @@ addon:RegisterEvent("ADDON_LOADED", function(arg)
 
 	addon:RegisterEvent("PLAYER_LOGIN", function()
 		addon.Font:Update()
+
 		-- to fetch and cache the tracked house data
 		local guid = C_Housing.GetTrackedHouseGuid()
 		if guid then
@@ -89,16 +90,17 @@ addon:RegisterEvent("ADDON_LOADED", function(arg)
 		-- this way I'm able to show honour and reputation bars simultaneously, in the default UI enabling honour tracking
 		-- resets faction tracking
 		local isHonorBarHooked = false
-		local function hookHonor()
+
+		EventUtil.ContinueOnAddOnLoaded("Blizzard_PVPUI", function()
 			if not isHonorBarHooked then
 				for _, panel in next, {"CasualPanel", "RatedPanel", "TrainingGroundsPanel"} do
 					PVPQueueFrame.HonorInset[panel].HonorLevelDisplay:SetScript("OnMouseUp", function()
 						if IsShiftKeyDown() then
 							if IsWatchingHonorAsXP() then
-								PlaySound(857) -- SOUNDKIT.IG_MAINMENU_OPTION_CHECKBOX_OFF
+								PlaySound(SOUNDKIT.IG_MAINMENU_OPTION_CHECKBOX_OFF)
 								SetWatchingHonorAsXP(false)
 							else
-								PlaySound(856) -- SOUNDKIT.IG_MAINMENU_OPTION_CHECKBOX_ON
+								PlaySound(SOUNDKIT.IG_MAINMENU_OPTION_CHECKBOX_ON)
 								SetWatchingHonorAsXP(true)
 							end
 
@@ -119,16 +121,14 @@ addon:RegisterEvent("ADDON_LOADED", function(arg)
 
 				isHonorBarHooked = true
 			end
-		end
-
-		EventUtil.ContinueOnAddOnLoaded("Blizzard_PVPUI", hookHonor)
+		end)
 
 		ReputationFrame.ReputationDetailFrame.WatchFactionCheckbox:SetScript("OnClick", function(self)
 			if self:GetChecked() then
-				PlaySound(856) -- SOUNDKIT.IG_MAINMENU_OPTION_CHECKBOX_ON
+				PlaySound(SOUNDKIT.IG_MAINMENU_OPTION_CHECKBOX_ON)
 				C_Reputation.SetWatchedFactionByIndex(C_Reputation.GetSelectedFaction())
 			else
-				PlaySound(857) -- SOUNDKIT.IG_MAINMENU_OPTION_CHECKBOX_OFF
+				PlaySound(SOUNDKIT.IG_MAINMENU_OPTION_CHECKBOX_OFF)
 				C_Reputation.SetWatchedFactionByIndex(0)
 			end
 
