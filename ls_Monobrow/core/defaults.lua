@@ -67,6 +67,7 @@ D.global = {
 			-- normal
 			[2] = rgb(148, 0, 140), -- #94008C (Blizzard Colour)
 		},
+		travel_points = rgb(9, 165, 187), -- #09A5BB (Average of the Bar Texture)
 	},
 	borders = {
 		[1] = {
@@ -127,4 +128,8 @@ D.profile = {
 			point = {point = "BOTTOM", x = 0, y = 4},
 		},
 	},
+}
+
+D.char = {
+	travel_points = true,
 }

@@ -4,12 +4,15 @@ addon.Segment = {}
 
 -- Lua
 local _G = getfenv(0)
+local m_min = _G.math.min
+local next = _G.next
 
 -- Mine
 local ARTIFACT_LEVEL_TEMPLATE = _G.ARTIFACTS_NUM_PURCHASED_RANKS:gsub("%%d", "|cffffffff%%d|r")
 local HONOR_TEMPLATE = _G.LFG_LIST_HONOR_LEVEL_CURRENT_PVP:gsub("%%d", "|cffffffff%%d|r")
 local RENOWN_PLUS = _G.LANDING_PAGE_RENOWN_LABEL .. "+"
 local REPUTATION_TEMPLATE = _G.SUBTITLE_FORMAT -- because of language specific ":" and "："
+local TIME_REMAINING = _G.TIME_REMAINING_WITH_TIME:format("|cffffffff%s|r")
 
 local segment_base_proto = {}
 do
@@ -286,6 +289,32 @@ do
 		self:Update(cur - min, max - min, 0, C.db.global.colors.house)
 	end
 
+	function segment_ext_proto:UpdateTravelPoints(data)
+		-- TODO: implement pending rewards
+		-- local pendingRewards = C_PerksProgram.GetPendingChestRewards()
+
+		local cur = 0
+		for _, activity in next, data.activities do
+			if activity.completed then
+				cur = cur + activity.thresholdContributionAmount
+			end
+		end
+
+		local max = 0
+		for _, thresholdInfo in next, data.thresholds do
+			if thresholdInfo.requiredContributionAmount > max then
+				max = thresholdInfo.requiredContributionAmount
+			end
+		end
+
+		self.tooltipInfo = {
+			header = _G.MONTHLY_ACTIVITIES_POINTS,
+			line1 = data.displayMonthName,
+			line2 = TIME_REMAINING:format(SecondsToTime(data.secondsRemaining)),
+		}
+
+		self:Update(m_min(cur, max), max, 0, C.db.global.colors.travel_points)
+	end
 	function segment_ext_proto:UpdateDummy()
 		self.tooltipInfo = nil
 
