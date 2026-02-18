@@ -132,6 +132,6 @@ D.profile = {
 }
 
 D.char = {
-	travel_points = true,
-	endeavor = true,
+	travel_points = false,
+	endeavor = false,
 }
