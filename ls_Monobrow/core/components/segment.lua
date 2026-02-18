@@ -469,13 +469,11 @@ function addon.Segment:Create(bar, i, textParent, textureParent)
 	ag.Anim = anim
 
 	local sep = textureParent:CreateTexture(nil, "ARTWORK", nil, -7)
-	sep:SetTexture("Interface\\AddOns\\ls_Monobrow\\assets\\bar-sep", "REPEAT", "REPEAT")
-	sep:SetVertTile(true)
-	sep:SetTexCoord(2 / 16, 14 / 16, 0 / 8, 8 / 8)
-	sep:SetSize(12 / 2, 0)
+	sep:SetColorTexture(0, 0, 0, 0.5)
+	sep:SetSize(2, 0)
 	sep:SetPoint("TOP", 0, 0)
 	sep:SetPoint("BOTTOM", 0, 0)
-	sep:SetPoint("LEFT", segment, "RIGHT", -2, 0)
+	sep:SetPoint("LEFT", segment, "RIGHT", 0, 0)
 	sep:Hide()
 	segment.Sep = sep
 
