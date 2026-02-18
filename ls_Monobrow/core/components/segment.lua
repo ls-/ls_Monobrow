@@ -4,12 +4,15 @@ addon.Segment = {}
 
 -- Lua
 local _G = getfenv(0)
+local m_min = _G.math.min
+local next = _G.next
 
 -- Mine
 local ARTIFACT_LEVEL_TEMPLATE = _G.ARTIFACTS_NUM_PURCHASED_RANKS:gsub("%%d", "|cffffffff%%d|r")
 local HONOR_TEMPLATE = _G.LFG_LIST_HONOR_LEVEL_CURRENT_PVP:gsub("%%d", "|cffffffff%%d|r")
 local RENOWN_PLUS = _G.LANDING_PAGE_RENOWN_LABEL .. "+"
 local REPUTATION_TEMPLATE = _G.SUBTITLE_FORMAT -- because of language specific ":" and "："
+local TIME_REMAINING = _G.TIME_REMAINING_WITH_TIME:format("|cffffffff%s|r")
 
 local segment_base_proto = {}
 do
@@ -286,6 +289,53 @@ do
 		self:Update(cur - min, max - min, 0, C.db.global.colors.house)
 	end
 
+	function segment_ext_proto:UpdateTravelPoints(data)
+		-- TODO: implement pending rewards
+		-- local pendingRewards = C_PerksProgram.GetPendingChestRewards()
+
+		local cur = 0
+		for _, activity in next, data.activities do
+			if activity.completed then
+				cur = cur + activity.thresholdContributionAmount
+			end
+		end
+
+		local max = 0
+		for _, thresholdInfo in next, data.thresholds do
+			if thresholdInfo.requiredContributionAmount > max then
+				max = thresholdInfo.requiredContributionAmount
+			end
+		end
+
+		self.tooltipInfo = {
+			header = _G.MONTHLY_ACTIVITIES_POINTS,
+			line1 = data.displayMonthName,
+			line2 = TIME_REMAINING:format(SecondsToTime(data.secondsRemaining)),
+		}
+
+		self:Update(m_min(cur, max), max, 0, C.db.global.colors.travel_points)
+	end
+
+	function segment_ext_proto:UpdateNeighborhoodInitiative(data)
+		local cur = data.currentProgress
+		if cur == 0 then
+			cur = 1
+		end
+
+		local max = data.progressRequired
+		if max == 0 then
+			max = 1
+		end
+
+		self.tooltipInfo = {
+			header = _G.ENDEAVOR_FAVOR,
+			line1 = data.title,
+			line2 = TIME_REMAINING:format(SecondsToTime(data.duration)),
+		}
+
+		self:Update(m_min(cur, max), max, 0, C.db.global.colors.endeavor)
+	end
+
 	function segment_ext_proto:UpdateDummy()
 		self.tooltipInfo = nil
 
@@ -419,13 +469,11 @@ function addon.Segment:Create(bar, i, textParent, textureParent)
 	ag.Anim = anim
 
 	local sep = textureParent:CreateTexture(nil, "ARTWORK", nil, -7)
-	sep:SetTexture("Interface\\AddOns\\ls_Monobrow\\assets\\bar-sep", "REPEAT", "REPEAT")
-	sep:SetVertTile(true)
-	sep:SetTexCoord(2 / 16, 14 / 16, 0 / 8, 8 / 8)
-	sep:SetSize(12 / 2, 0)
+	sep:SetColorTexture(0, 0, 0, 0.5)
+	sep:SetSize(2, 0)
 	sep:SetPoint("TOP", 0, 0)
 	sep:SetPoint("BOTTOM", 0, 0)
-	sep:SetPoint("LEFT", segment, "RIGHT", -2, 0)
+	sep:SetPoint("LEFT", segment, "RIGHT", 0, 0)
 	sep:Hide()
 	segment.Sep = sep
 

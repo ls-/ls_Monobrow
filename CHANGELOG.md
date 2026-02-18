@@ -1,5 +1,10 @@
 # CHANGELOG
 
+## Version 120001.01
+
+- Added support for Travel Points. Use newly added "Show as Experience Bar" toggle above the progress bar in the Traveler's Log tab.
+- Added support for Neighborhood Initiatives. Use newly added "Show as Experience Bar" toggle above the progress bar in the Endeavors tab.
+
 ## Version 120000.04
 
 - Added options to fade in the monobar on entering combat and/or acquiring a target.

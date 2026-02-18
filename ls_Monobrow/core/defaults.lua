@@ -1,13 +1,11 @@
 local _, addon = ...
-local C, D, L = addon.C, addon.D, addon.L
+local C, D, L, LEM = addon.C, addon.D, addon.L, addon.LibEditMode
 
 -- Lua
 local _G = getfenv(0)
 local ipairs = _G.ipairs
 
 -- Mine
-local LEM = LibStub("LibEditMode-ls", true) or LibStub("LibEditMode")
-
 function addon:GetLayout()
 	return C.db.profile.layouts[LEM:GetActiveLayoutName() or "Modern"]
 end
@@ -67,6 +65,8 @@ D.global = {
 			-- normal
 			[2] = rgb(148, 0, 140), -- #94008C (Blizzard Colour)
 		},
+		travel_points = rgb(9, 165, 187), -- #09A5BB (Average of the Bar Texture)
+		endeavor = rgb(75, 93, 27), -- #4b5d1b (Based on the Endevour Task Flag)
 	},
 	borders = {
 		[1] = {
@@ -127,4 +127,9 @@ D.profile = {
 			point = {point = "BOTTOM", x = 0, y = 4},
 		},
 	},
+}
+
+D.char = {
+	travel_points = false,
+	endeavor = false,
 }

@@ -1,5 +1,5 @@
 local addonName, addon = ...
-local C, D, L = addon.C, addon.D, addon.L
+local C, D, L, LEM = addon.C, addon.D, addon.L, addon.LibEditMode
 
 -- Lua
 local _G = getfenv(0)
@@ -10,8 +10,6 @@ local next = _G.next
 local s_format = _G.string.format
 
 -- Mine
-local LEM = LibStub("LibEditMode-ls", true) or LibStub("LibEditMode")
-
 -- move these elsehwere
 local CL_LINK = "https://github.com/ls-/ls_Monobrow/blob/master/CHANGELOG.md"
 local CURSE_LINK = "https://www.curseforge.com/wow/addons/ls-monobrow"
@@ -266,9 +264,7 @@ function addon:CreateEditModeConfig()
 			expandedLabel = L["COLLAPSE_OPTIONS"],
 			collapsedLabel = _G.LOCALE_TEXT_LABEL,
 			appendArrow = true,
-			default = function()
-				return D.global.settings.text
-			end,
+			default = D.global.settings.text,
 			get = function()
 				return C.db.global.settings.text
 			end,
@@ -378,9 +374,7 @@ function addon:CreateEditModeConfig()
 			expandedLabel = L["COLLAPSE_OPTIONS"],
 			collapsedLabel = L["FADING"],
 			appendArrow = true,
-			default = function()
-				return D.global.settings.fade
-			end,
+			default = D.global.settings.fade,
 			get = function()
 				return C.db.global.settings.fade
 			end,

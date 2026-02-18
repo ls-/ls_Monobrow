@@ -6,5 +6,6 @@ local _G = getfenv(0)
 
 -- Mine
 addon.CHANGELOG = [[
-- Added options to fade in the monobar on entering combat and/or acquiring a target.
+- Added support for Travel Points. Use newly added "Show as Experience Bar" toggle above the progress bar in the Traveler's Log tab.
+- Added support for Neighborhood Initiatives. Use newly added "Show as Experience Bar" toggle above the progress bar in the Endeavors tab.
 ]]

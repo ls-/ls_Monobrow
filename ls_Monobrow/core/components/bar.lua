@@ -6,10 +6,9 @@ addon.Bar = {}
 local _G = getfenv(0)
 local m_floor = _G.math.floor
 local next = _G.next
-local unpack = _G.unpack
 
 -- Mine
-local MAX_SEGMENTS = 5
+local MAX_SEGMENTS = 7
 local CUR_MAX_PERC_VALUE_TEMPLATE = "%s / %s (%.1f%%)"
 local CUR_MAX_VALUE_TEMPLATE = "%s / %s"
 
@@ -139,6 +138,14 @@ do
 				self[index]:UpdateXP()
 			end
 
+			-- Travel Points
+			local info = C_PerksActivities.GetPerksActivitiesInfo()
+			if C.db.char.travel_points and info then
+				index = index + 1
+
+				self[index]:UpdateTravelPoints(info)
+			end
+
 			-- House Favour
 			local guid = C_Housing.GetTrackedHouseGuid()
 			if guid and houseInfoCache[guid] and houseInfoCache[guid].houseLevel then
@@ -146,6 +153,15 @@ do
 
 				self[index]:UpdateHouseXP(houseInfoCache[guid])
 			end
+
+			-- Neighborhood Initiative
+			info = C_NeighborhoodInitiative.GetNeighborhoodInitiativeInfo()
+			if C.db.char.endeavor and info and info.isLoaded then
+				index = index + 1
+
+				self[index]:UpdateNeighborhoodInitiative(info)
+			end
+
 
 			-- Honour
 			if IsWatchingHonorAsXP() or C_PvP.IsActiveBattlefield() or IsInActiveWorldPVP() then
@@ -329,6 +345,10 @@ function addon.Bar:Create()
 	bar:RegisterEvent("HOUSE_LEVEL_FAVOR_UPDATED")
 	bar:RegisterEvent("PLAYER_HOUSE_LIST_UPDATED")
 	bar:RegisterEvent("TRACKED_HOUSE_CHANGED")
+	-- neighborhood initiative
+	bar:RegisterEvent("NEIGHBORHOOD_INITIATIVE_UPDATED")
+	-- travel points
+	bar:RegisterEvent("PERKS_ACTIVITIES_UPDATED")
 	-- state / visibility
 	bar:RegisterEvent("PET_BATTLE_CLOSE")
 	bar:RegisterEvent("PET_BATTLE_OPENING_START")
