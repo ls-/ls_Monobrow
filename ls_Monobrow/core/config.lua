@@ -1,5 +1,5 @@
 local addonName, addon = ...
-local C, D, L = addon.C, addon.D, addon.L
+local C, D, L, LEM = addon.C, addon.D, addon.L, addon.LibEditMode
 
 -- Lua
 local _G = getfenv(0)
@@ -10,8 +10,6 @@ local next = _G.next
 local s_format = _G.string.format
 
 -- Mine
-local LEM = LibStub("LibEditMode-ls", true) or LibStub("LibEditMode")
-
 -- move these elsehwere
 local CL_LINK = "https://github.com/ls-/ls_Monobrow/blob/master/CHANGELOG.md"
 local CURSE_LINK = "https://www.curseforge.com/wow/addons/ls-monobrow"
