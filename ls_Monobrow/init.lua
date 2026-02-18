@@ -167,5 +167,25 @@ addon:RegisterEvent("ADDON_LOADED", function(arg)
 				bar:UpdateSegments()
 			end)
 		end)
+
+		EventUtil.ContinueOnAddOnLoaded("Blizzard_HousingDashboard", function()
+			local button = createWatchButton(HousingDashboardFrame.HouseInfoContent.ContentFrame.InitiativesFrame.InitiativeSetFrame)
+			button:SetPoint("BOTTOMRIGHT", HousingDashboardFrame.HouseInfoContent.ContentFrame.InitiativesFrame.InitiativeSetFrame.ProgressBar, "TOPRIGHT", 0, 0)
+			button:SetScript("OnShow", function(self)
+				self:SetChecked(C.db.char.endeavor)
+			end)
+			button:SetScript("OnClick", function(self)
+				C.db.char.endeavor = not C.db.char.endeavor
+				self:GetChecked(C.db.char.endeavor)
+
+				if self:GetChecked() then
+					PlaySound(SOUNDKIT.IG_MAINMENU_OPTION_CHECKBOX_ON)
+				else
+					PlaySound(SOUNDKIT.IG_MAINMENU_OPTION_CHECKBOX_OFF)
+				end
+
+				bar:UpdateSegments()
+			end)
+		end)
 	end)
 end)

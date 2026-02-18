@@ -154,6 +154,15 @@ do
 				self[index]:UpdateHouseXP(houseInfoCache[guid])
 			end
 
+			-- Neighborhood Initiative
+			info = C_NeighborhoodInitiative.GetNeighborhoodInitiativeInfo()
+			if C.db.char.endeavor and info and info.isLoaded then
+				index = index + 1
+
+				self[index]:UpdateNeighborhoodInitiative(info)
+			end
+
+
 			-- Honour
 			if IsWatchingHonorAsXP() or C_PvP.IsActiveBattlefield() or IsInActiveWorldPVP() then
 				index = index + 1
@@ -336,6 +345,8 @@ function addon.Bar:Create()
 	bar:RegisterEvent("HOUSE_LEVEL_FAVOR_UPDATED")
 	bar:RegisterEvent("PLAYER_HOUSE_LIST_UPDATED")
 	bar:RegisterEvent("TRACKED_HOUSE_CHANGED")
+	-- neighborhood initiative
+	bar:RegisterEvent("NEIGHBORHOOD_INITIATIVE_UPDATED")
 	-- travel points
 	bar:RegisterEvent("PERKS_ACTIVITIES_UPDATED")
 	-- state / visibility

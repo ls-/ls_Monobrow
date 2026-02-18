@@ -68,6 +68,7 @@ D.global = {
 			[2] = rgb(148, 0, 140), -- #94008C (Blizzard Colour)
 		},
 		travel_points = rgb(9, 165, 187), -- #09A5BB (Average of the Bar Texture)
+		endeavor = rgb(75, 93, 27), -- #4b5d1b (Based on the Endevour Task Flag)
 	},
 	borders = {
 		[1] = {
@@ -132,4 +133,5 @@ D.profile = {
 
 D.char = {
 	travel_points = true,
+	endeavor = true,
 }

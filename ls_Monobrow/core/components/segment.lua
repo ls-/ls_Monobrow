@@ -315,6 +315,27 @@ do
 
 		self:Update(m_min(cur, max), max, 0, C.db.global.colors.travel_points)
 	end
+
+	function segment_ext_proto:UpdateNeighborhoodInitiative(data)
+		local cur = data.currentProgress
+		if cur == 0 then
+			cur = 1
+		end
+
+		local max = data.progressRequired
+		if max == 0 then
+			max = 1
+		end
+
+		self.tooltipInfo = {
+			header = _G.ENDEAVOR_FAVOR,
+			line1 = data.title,
+			line2 = TIME_REMAINING:format(SecondsToTime(data.duration)),
+		}
+
+		self:Update(m_min(cur, max), max, 0, C.db.global.colors.endeavor)
+	end
+
 	function segment_ext_proto:UpdateDummy()
 		self.tooltipInfo = nil
 
