@@ -91,7 +91,7 @@ addon:RegisterEvent("ADDON_LOADED", function(arg)
 		local isHonorBarHooked = false
 		local function hookHonor()
 			if not isHonorBarHooked then
-				for _, panel in next, {"CasualPanel", "TrainingGroundsPanel"} do
+				for _, panel in next, {"CasualPanel", "RatedPanel", "TrainingGroundsPanel"} do
 					PVPQueueFrame.HonorInset[panel].HonorLevelDisplay:SetScript("OnMouseUp", function()
 						if IsShiftKeyDown() then
 							if IsWatchingHonorAsXP() then
