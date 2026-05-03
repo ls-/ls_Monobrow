@@ -409,8 +409,6 @@ function addon.Segment:Create(bar, i, textParent, textureParent)
 	segment:SetScript("OnLeave", segment.OnLeave)
 
 	segment.Texture = segment:GetStatusBarTexture()
-	segment.Texture:SetSnapToPixelGrid(false)
-	segment.Texture:SetTexelSnappingBias(0)
 
 	local ag = segment.Texture:CreateAnimationGroup()
 	ag.color = {a = 1}
@@ -431,8 +429,6 @@ function addon.Segment:Create(bar, i, textParent, textureParent)
 	segment.Extension = ext
 
 	ext.Texture = ext:GetStatusBarTexture()
-	ext.Texture:SetSnapToPixelGrid(false)
-	ext.Texture:SetTexelSnappingBias(0)
 
 	ag = ext.Texture:CreateAnimationGroup()
 	ext.ColorAnim = ag

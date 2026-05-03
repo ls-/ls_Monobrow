@@ -1,5 +1,11 @@
 # CHANGELOG
 
+## Version 120005.01
+
+- Added 12.0.5 support.
+- Fixed an issue where 3rd party LSM textures wouldn't load correctly.
+- Updated Simplified Chinese translation. Translated by 7peanuts@GitHub.
+
 ## Version 120001.01
 
 - Added support for Travel Points. Use newly added "Show as Experience Bar" toggle above the progress bar in the
