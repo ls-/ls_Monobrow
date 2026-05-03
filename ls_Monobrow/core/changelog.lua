@@ -6,6 +6,7 @@ local _G = getfenv(0)
 
 -- Mine
 addon.CHANGELOG = [[
-- Added support for Travel Points. Use newly added "Show as Experience Bar" toggle above the progress bar in the Traveler's Log tab.
-- Added support for Neighborhood Initiatives. Use newly added "Show as Experience Bar" toggle above the progress bar in the Endeavors tab.
+- Added 12.0.5 support.
+- Fixed an issue where 3rd party LSM textures wouldn't load correctly.
+- Updated Simplified Chinese translation. Translated by 7peanuts@GitHub.
 ]]
