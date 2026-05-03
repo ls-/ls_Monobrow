@@ -79,6 +79,7 @@ addon:RegisterEvent("ADDON_LOADED", function(arg)
 
 	addon:RegisterEvent("PLAYER_LOGIN", function()
 		addon.Font:Update()
+		bar:UpdateTextures()
 
 		-- to fetch and cache the tracked house data
 		local guid = C_Housing.GetTrackedHouseGuid()
