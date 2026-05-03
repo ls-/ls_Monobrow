@@ -3,8 +3,11 @@
 ## Version: 120001.01
 ## Title: LS: |cff1fcecbMonobrow|r
 ## Notes: Just like your eyebrows it's all in one!
+## Notes-zhCN: 替换原生经验条，可集成显示声望、荣誉、家宅点数等。
 ## IconTexture: Interface\AddOns\ls_Monobrow\assets\logo-64
 ## SavedVariables: LS_MONOBROW_GLOBAL_CONFIG
+
+## Category-zhCN: 用户界面
 
 embeds\_embeds.xml
 core\_core.xml
