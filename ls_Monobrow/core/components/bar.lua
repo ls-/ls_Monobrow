@@ -139,11 +139,13 @@ do
 			end
 
 			-- Travel Points
-			local info = C_PerksActivities.GetPerksActivitiesInfo()
-			if C.db.char.travel_points and info then
-				index = index + 1
+			if C.db.char.travel_points then
+				local info = C_PerksActivities.GetPerksActivitiesInfo()
+				if info then
+					index = index + 1
 
-				self[index]:UpdateTravelPoints(info)
+					self[index]:UpdateTravelPoints(info)
+				end
 			end
 
 			-- House Favour
@@ -155,11 +157,13 @@ do
 			end
 
 			-- Neighborhood Initiative
-			info = C_NeighborhoodInitiative.GetNeighborhoodInitiativeInfo()
-			if C.db.char.endeavor and info and info.isLoaded then
-				index = index + 1
+			if C.db.char.endeavor then
+				local info = C_NeighborhoodInitiative.GetNeighborhoodInitiativeInfo()
+				if info and info.isLoaded then
+					index = index + 1
 
-				self[index]:UpdateNeighborhoodInitiative(info)
+					self[index]:UpdateNeighborhoodInitiative(info)
+				end
 			end
 
 
