@@ -1,5 +1,9 @@
 # CHANGELOG
 
+## Version 120005.02
+
+- Fixed a memory leak caused by constant updates of trade post's and endeavours' data.
+
 ## Version 120005.01
 
 - Added 12.0.5 support.

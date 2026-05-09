@@ -19,6 +19,8 @@ local WAGO_LINK = "https://addons.wago.io/addons/ls-monobrow"
 
 local showLinkCopyPopup
 do
+	local IsModKeyDown = IsMacClient() and IsMetaKeyDown or IsControlKeyDown
+
 	local function getStatusMessage()
 		local num = m_random(1, 100)
 		if num == 27 then
@@ -63,7 +65,7 @@ do
 		popup:Hide()
 	end)
 	editBox:SetScript("OnKeyUp", function(_, key)
-		if IsControlKeyDown() and (key == "C" or key == "X") then
+		if IsModKeyDown() and (key == "C" or key == "X") then
 			ActionStatus:DisplayMessage(getStatusMessage())
 
 			popup:Hide()
@@ -513,7 +515,7 @@ do
 		downloadContainer:AddButton("Interface\\AddOns\\ls_Monobrow\\assets\\curseforge-64", L["CURSEFORGE"], CURSE_LINK)
 		downloadContainer:AddButton("Interface\\AddOns\\ls_Monobrow\\assets\\wago-64", L["WAGO"], WAGO_LINK)
 
-		local changelogHeader = createHeader(panel, s_format("%s |H%s|h[|c%s%s|r]|h",  L["CHANGELOG"], CL_LINK, D.global.colors.addon:GetHex(), L["CHANGELOG_FULL"]))
+		local changelogHeader = createHeader(panel, s_format("%s |H%s|h[|c%s%s|r]|h", L["CHANGELOG"], CL_LINK, D.global.colors.addon:GetHex(), L["CHANGELOG_FULL"]))
 		changelogHeader:SetPoint("TOP", downloadContainer, "BOTTOM", 0, 8)
 		changelogHeader:SetPoint("LEFT")
 		changelogHeader:SetPoint("RIGHT")

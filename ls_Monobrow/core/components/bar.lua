@@ -13,6 +13,8 @@ local CUR_MAX_PERC_VALUE_TEMPLATE = "%s / %s (%.1f%%)"
 local CUR_MAX_VALUE_TEMPLATE = "%s / %s"
 
 local houseInfoCache = {}
+local initiativeInfo
+local perksActivitiesInfo
 
 local bar_proto = {}
 
@@ -139,11 +141,12 @@ do
 			end
 
 			-- Travel Points
-			local info = C_PerksActivities.GetPerksActivitiesInfo()
-			if C.db.char.travel_points and info then
-				index = index + 1
+			if C.db.char.travel_points then
+				if perksActivitiesInfo then
+					index = index + 1
 
-				self[index]:UpdateTravelPoints(info)
+					self[index]:UpdateTravelPoints(perksActivitiesInfo)
+				end
 			end
 
 			-- House Favour
@@ -155,13 +158,15 @@ do
 			end
 
 			-- Neighborhood Initiative
-			info = C_NeighborhoodInitiative.GetNeighborhoodInitiativeInfo()
-			if C.db.char.endeavor and info and info.isLoaded then
-				index = index + 1
+			if C.db.char.endeavor then
+				if initiativeInfo and initiativeInfo.isLoaded then
+					index = index + 1
 
-				self[index]:UpdateNeighborhoodInitiative(info)
+					self[index]:UpdateNeighborhoodInitiative(initiativeInfo)
+				else
+					C_NeighborhoodInitiative.RequestNeighborhoodInitiativeInfo()
+				end
 			end
-
 
 			-- Honour
 			if IsWatchingHonorAsXP() or C_PvP.IsActiveBattlefield() or IsInActiveWorldPVP() then
@@ -273,6 +278,16 @@ do
 				end
 			else
 				C_Housing.GetCurrentHouseLevelFavor(guid)
+			end
+		elseif event == "PERKS_ACTIVITIES_UPDATED" then
+			perksActivitiesInfo = C_PerksActivities.GetPerksActivitiesInfo()
+			if perksActivitiesInfo and not timer then
+				timer = C_Timer.NewTimer(0.1, deferredUpdate)
+			end
+		elseif event == "NEIGHBORHOOD_INITIATIVE_UPDATED" then
+			initiativeInfo = C_NeighborhoodInitiative.GetNeighborhoodInitiativeInfo()
+			if initiativeInfo and initiativeInfo.isLoaded and not timer then
+				timer = C_Timer.NewTimer(0.1, deferredUpdate)
 			end
 		else
 			if not timer then
