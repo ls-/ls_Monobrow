@@ -166,7 +166,6 @@ do
 				end
 			end
 
-
 			-- Honour
 			if IsWatchingHonorAsXP() or C_PvP.IsActiveBattlefield() or IsInActiveWorldPVP() then
 				index = index + 1

@@ -134,7 +134,6 @@ function addon.Fader:UnwatchTarget(object)
 	end
 end
 
-
 function add(mode, object, delay, duration, toAlpha, callback)
 	local initAlpha = object:GetAlpha()
 	local finalAlpha = mode == FADE_IN and 1 or toAlpha
