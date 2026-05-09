@@ -66,6 +66,8 @@ read_globals = {
 	"InCombatLockdown",
 	"IsControlKeyDown",
 	"IsInActiveWorldPVP",
+	"IsMacClient",
+	"IsMetaKeyDown",
 	"IsPlayerAtEffectiveMaxLevel",
 	"IsShiftKeyDown",
 	"IsWatchingHonorAsXP",

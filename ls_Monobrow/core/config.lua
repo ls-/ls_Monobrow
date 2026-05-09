@@ -19,6 +19,8 @@ local WAGO_LINK = "https://addons.wago.io/addons/ls-monobrow"
 
 local showLinkCopyPopup
 do
+	local IsModKeyDown = IsMacClient() and IsMetaKeyDown or IsControlKeyDown
+
 	local function getStatusMessage()
 		local num = m_random(1, 100)
 		if num == 27 then
@@ -63,7 +65,7 @@ do
 		popup:Hide()
 	end)
 	editBox:SetScript("OnKeyUp", function(_, key)
-		if IsControlKeyDown() and (key == "C" or key == "X") then
+		if IsModKeyDown() and (key == "C" or key == "X") then
 			ActionStatus:DisplayMessage(getStatusMessage())
 
 			popup:Hide()
