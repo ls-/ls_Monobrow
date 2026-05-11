@@ -11,7 +11,7 @@ function addon:GetLayout()
 end
 
 function addon:GetDefaultLayout()
-	return C.db.profile.layouts["*"]
+	return D.profile.layouts["*"]
 end
 
 function addon:GetBorderList()
