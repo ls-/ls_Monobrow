@@ -104,7 +104,7 @@ function addon:CreateEditModeConfig()
 		C.db.profile.layouts[layoutName].point.y = y
 	end
 
-	LEM:AddFrame(LSMonobrow, onPositionChanged, D.profile.layouts["*"].point, L["LS_MONOBROW"])
+	LEM:AddFrame(LSMonobrow, onPositionChanged, D.profile.layouts["*"].point, L["LS_ADDON"])
 
 	LEM:RegisterCallback("layout", function(layoutName)
 		-- AceDB takes care of layout table duplication
@@ -565,7 +565,7 @@ do
 
 		supportContainer:MarkDirty()
 
-		local category = Settings.RegisterCanvasLayoutCategory(panel, L["LS_MONOBROW"])
+		local category = Settings.RegisterCanvasLayoutCategory(panel, L["LS_ADDON"])
 
 		Settings.RegisterAddOnCategory(category)
 
@@ -588,7 +588,7 @@ do
 	function addon:CreateAceConfig()
 		C.options = {
 			type = "group",
-			name = s_format("%s |cffcacaca(%s)|r", L["LS_MONOBROW"], addon.VER.string),
+			name = s_format("%s |cffcacaca(%s)|r", L["LS_ADDON"], addon.VER.string),
 			args = {
 				general = {
 					order = 1,
