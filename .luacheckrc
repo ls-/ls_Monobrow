@@ -12,10 +12,14 @@ ignore = {
 	-- "111",
 	-- "112",
 	-- "122",
+	"111/LS.*", -- Setting an undefined global variable starting with LS
+	"112/LS.*", -- Mutating an undefined global variable starting with LS
+	"113/LS.*", -- Accessing an undefined global variable starting with LS
 	"211/_G", -- Unused local variable _G
 	"211/C",  -- Unused local variable C
 	"211/D",  -- Unused local variable D
 	"211/L",  -- Unused local variable L
+	"432", -- Shadowing an upvalue argument
 }
 
 globals = {
