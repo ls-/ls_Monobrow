@@ -43,7 +43,7 @@ addon:RegisterEvent("ADDON_LOADED", function(arg)
 	addon:CreateBlizzConfig()
 
 	AddonCompartmentFrame:RegisterAddon({
-		text = L["LS_ADDON"],
+		text = L["ADDON_NAME"],
 		icon = "Interface\\AddOns\\ls_Monobrow\\assets\\logo-32",
 		func = function()
 			if IsShiftKeyDown() then
