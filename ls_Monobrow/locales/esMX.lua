@@ -1,4 +1,4 @@
--- Contributors:
+﻿-- Contributors:
 
 local _, addon = ...
 local L = addon.L
@@ -7,3 +7,5 @@ local L = addon.L
 local _G = getfenv(0)
 
 if GetLocale() ~= "esMX" then return end
+
+L["EXPORT"] = "Exportar"

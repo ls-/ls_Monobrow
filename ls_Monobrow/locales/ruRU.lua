@@ -1,4 +1,4 @@
--- Contributors:
+﻿-- Contributors:
 
 local _, addon = ...
 local L = addon.L
@@ -13,6 +13,7 @@ L["CHANGELOG"] = "Список изменений"
 L["CHANGELOG_FULL"] = "Полный"
 L["COLLAPSE_OPTIONS"] = "Свернуть настройки"
 L["DOWNLOADS"] = "Загрузки"
+L["EXPORT"] = "Экспорт"
 L["FADING"] = "Затухание"
 L["FADING_COMBAT_DESC"] = "Появляться при начале боя."
 L["FADING_TARGET_DESC"] = "Появляться при выборе цели."
