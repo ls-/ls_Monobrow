@@ -6,6 +6,8 @@
 ## IconTexture: Interface\AddOns\ls_Monobrow\assets\logo-64
 ## SavedVariables: LS_MONOBROW_GLOBAL_CONFIG
 
+## X-Curse-Project-ID: 1439348
+
 embeds\_embeds.xml
 core\_core.xml
 locales\_locales.xml
