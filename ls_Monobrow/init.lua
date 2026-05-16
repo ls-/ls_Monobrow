@@ -81,7 +81,7 @@ addon:RegisterEvent("ADDON_LOADED", function(arg)
 		addon.Font:Update()
 		bar:UpdateTextures()
 
-		-- to fetch and cache the tracked house data
+		-- fetch and cache the tracked house data
 		local guid = C_Housing.GetTrackedHouseGuid()
 		if guid then
 			C_Housing.GetCurrentHouseLevelFavor(guid)

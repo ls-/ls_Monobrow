@@ -484,7 +484,6 @@ do
 		versionText:SetTextColor(0.4, 0.4, 0.4)
 		versionText:SetText(addon.VER.string)
 
-		-- UIPanelButtonTemplate
 		local configButton = CreateFrame("Button", nil, panel, "UIPanelButtonTemplate")
 		configButton:SetText(_G.ADVANCED_OPTIONS)
 		configButton:SetWidth(configButton:GetTextWidth() + 18)
@@ -573,7 +572,6 @@ do
 			Settings.OpenToCategory(category:GetID())
 		end
 	end
-
 end
 
 do
