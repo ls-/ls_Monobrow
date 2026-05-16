@@ -11,6 +11,16 @@ addon.VER = {}
 addon.VER.string = C_AddOns.GetAddOnMetadata(addonName, "Version")
 addon.VER.number = tonumber(addon.VER.string:gsub("%D", ""), nil)
 
+local function updateCallback()
+	addon.Bar:UpdateBorderTexture()
+	addon.Bar:UpdateBorderColor()
+	addon.Font:Update()
+
+	LSMonobrow:UpdateTextures()
+
+	addon:UpdateLayoutSettings()
+end
+
 local function shutdownCallback()
 	C.db.profile.version = addon.VER.number
 end
@@ -27,6 +37,9 @@ addon:RegisterEvent("ADDON_LOADED", function(arg)
 	end
 
 	C.db = LibStub("AceDB-3.0"):New("LS_MONOBROW_GLOBAL_CONFIG", D, true)
+	C.db:RegisterCallback("OnProfileChanged", updateCallback)
+	C.db:RegisterCallback("OnProfileCopied", updateCallback)
+	C.db:RegisterCallback("OnProfileReset", updateCallback)
 	C.db:RegisterCallback("OnProfileShutdown", shutdownCallback)
 	C.db:RegisterCallback("OnDatabaseShutdown", shutdownCallback)
 
@@ -34,13 +47,10 @@ addon:RegisterEvent("ADDON_LOADED", function(arg)
 
 	local bar = addon.Bar:Create()
 
-	addon.Bar:UpdateFading()
-	addon.Bar:UpdateBorderTexture()
-	addon.Bar:UpdateBorderColor()
-
+	addon:CreateImportExport()
 	addon:CreateEditModeConfig()
-	addon:CreateAceConfig()
 	addon:CreateBlizzConfig()
+	addon:CreateAceConfig()
 
 	AddonCompartmentFrame:RegisterAddon({
 		text = L["ADDON_NAME"],
@@ -78,7 +88,10 @@ addon:RegisterEvent("ADDON_LOADED", function(arg)
 	hideBar(SecondaryStatusTrackingBarContainer)
 
 	addon:RegisterEvent("PLAYER_LOGIN", function()
+		addon.Bar:UpdateBorderTexture()
+		addon.Bar:UpdateBorderColor()
 		addon.Font:Update()
+
 		bar:UpdateTextures()
 
 		-- fetch and cache the tracked house data
