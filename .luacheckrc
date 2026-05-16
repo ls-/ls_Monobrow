@@ -12,10 +12,14 @@ ignore = {
 	-- "111",
 	-- "112",
 	-- "122",
+	"111/LS.*", -- Setting an undefined global variable starting with LS
+	"112/LS.*", -- Mutating an undefined global variable starting with LS
+	"113/LS.*", -- Accessing an undefined global variable starting with LS
 	"211/_G", -- Unused local variable _G
 	"211/C",  -- Unused local variable C
 	"211/D",  -- Unused local variable D
 	"211/L",  -- Unused local variable L
+	"432", -- Shadowing an upvalue argument
 }
 
 globals = {
@@ -32,11 +36,13 @@ globals = {
 read_globals = {
 	"AbbreviateNumbers",
 	"ActionStatus",
+	"ActionStatus_DisplayMessage",
 	"AddonCompartmentFrame",
 	"BreakUpLargeNumbers",
 	"C_AddOns",
 	"C_AzeriteItem",
 	"C_ColorUtil",
+	"C_EncodingUtil",
 	"C_GossipInfo",
 	"C_Housing",
 	"C_MajorFactions",
@@ -56,6 +62,7 @@ read_globals = {
 	"EventUtil",
 	"GameFontHighlight",
 	"GameTooltip",
+	"GetClientDisplayExpansionLevel",
 	"GetLocale",
 	"GetQuestLogCompletionText",
 	"GetScreenWidth",
@@ -77,6 +84,8 @@ read_globals = {
 	"MainStatusTrackingBarContainer",
 	"MAX_REPUTATION_REACTION",
 	"Mixin",
+	"PanelTemplates_SetNumTabs",
+	"PanelTemplates_SetTab",
 	"PixelUtil",
 	"PlaySound",
 	"PVPQueueFrame",
@@ -93,6 +102,7 @@ read_globals = {
 	"tContains",
 	"tDeleteItem",
 	"UIParent",
+	"UISpecialFrames",
 	"UnitExists",
 	"UnitFactionGroup",
 	"UnitHonor",

@@ -1,5 +1,9 @@
 # CHANGELOG
 
+## Version 120005.03
+
+- Added profile import/export. Available at the "Profiles" tabs in Blizz config panel.
+
 ## Version 120005.02
 
 - Fixed a memory leak caused by constant updates of trade post's and endeavours' data.

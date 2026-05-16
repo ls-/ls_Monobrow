@@ -5,7 +5,7 @@ local C, D, L = addon.C, addon.D, addon.L
 local _G = getfenv(0)
 
 -- Mine
-L["LS_MONOBROW"] = ("LS: |c%sMonobrow|r"):format(D.global.colors.addon:GetHex())
+L["ADDON_NAME"] = ("LS: |c%sMonobrow|r"):format(D.global.colors.addon:GetHex())
 L["CURSEFORGE"] = "CurseForge"
 L["DISCORD"] = "Discord"
 L["GITHUB"] = "GitHub"
@@ -14,12 +14,15 @@ L["WOWINTERFACE"] = "WoWInterface"
 L["INFO"] = D.global.colors.addon:WrapTextInColorCode(_G.INFO)
 L["AC_TOOLTIP"] = ("|c%1$sClick:|r %2$s\n|c%1$sShift Click:|r %3$s"):format(D.global.colors.addon:GetHex(), _G.GAMEMENU_OPTIONS, _G.ADVANCED_OPTIONS)
 
+L["IMPORT"] = _G.HUD_EDIT_MODE_IMPORT_LAYOUT
+
 -- Require translation
 L["BONUS_XP_TOOLTIP"] = "Bonus XP: |cffffffff%s|r"
 L["CHANGELOG"] = "Changelog"
 L["CHANGELOG_FULL"] = "Full"
 L["COLLAPSE_OPTIONS"] = "Collapse Options"
 L["DOWNLOADS"] = "Downloads"
+L["EXPORT"] = "Export"
 L["FADING"] = "Fading"
 L["FADING_COMBAT_DESC"] = "Fade in on entering combat."
 L["FADING_TARGET_DESC"] = "Fade in on acquiring a target."

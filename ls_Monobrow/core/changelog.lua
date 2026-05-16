@@ -6,5 +6,5 @@ local _G = getfenv(0)
 
 -- Mine
 addon.CHANGELOG = [[
-- Fixed a memory leak caused by constant updates of trade post's and endeavours' data.
+- Added profile import/export. Available at the "Profiles" tabs in Blizz config panel.
 ]]
