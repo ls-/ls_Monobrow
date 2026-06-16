@@ -6,5 +6,6 @@ local _G = getfenv(0)
 
 -- Mine
 addon.CHANGELOG = [[
-- Fixed an issue where profile import/export leaked into other addons. TIL.
+- Added 12.0.7 support.
+- Slightly reworked Neighborhood Initiatives. The bar now shows the actual amount of contributions instead of normalised values provided by Blizz.
 ]]
