@@ -1,5 +1,11 @@
 # CHANGELOG
 
+## Version 120007.01
+
+- Added 12.0.7 support.
+- Slightly reworked Neighborhood Initiatives. The bar now shows the actual amount of contributions instead of normalised
+  values provided by Blizz.
+
 ## Version 120005.04
 
 - Fixed an issue where profile import/export leaked into other addons. TIL.
