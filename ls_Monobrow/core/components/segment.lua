@@ -4,6 +4,7 @@ addon.Segment = {}
 
 -- Lua
 local _G = getfenv(0)
+local m_floor = _G.math.floor
 local m_min = _G.math.min
 local next = _G.next
 
@@ -317,14 +318,27 @@ do
 	end
 
 	function segment_ext_proto:UpdateNeighborhoodInitiative(data)
-		local cur = data.currentProgress
-		if cur == 0 then
-			cur = 1
-		end
-
+		-- .progressRequired and .currentProgress are weird normalised values
 		local max = data.progressRequired
 		if max == 0 then
 			max = 1
+		end
+
+		local mult = 1
+		if max > 1 then
+			local total = 0
+
+			for i = 1, #data.milestones do
+				total = total + data.milestones[i].requiredContributionAmount
+			end
+
+			mult = total / max
+			max = total
+		end
+
+		local cur = m_floor(data.currentProgress * mult)
+		if cur == 0 then
+			cur = 1
 		end
 
 		self.tooltipInfo = {
