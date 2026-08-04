@@ -134,7 +134,7 @@ do
 
 		if not (C_PetBattles.IsInBattle() or UnitInVehicle("player")) then
 			-- XP
-			if not IsXPUserDisabled() and not IsPlayerAtEffectiveMaxLevel() then
+			if not IsXPUserDisabled() and not GameRulesUtil.IsPlayerAtEffectiveMaxLevel() then
 				index = index + 1
 
 				self[index]:UpdateXP()
