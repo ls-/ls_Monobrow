@@ -186,7 +186,7 @@ function addon:CreateEditModeConfig()
 					LSMonobrow:UpdateSize(C.db.profile.layouts[layoutName].width, value)
 				end
 			end,
-			minValue = 8,
+			minValue = 4,
 			maxValue = 32,
 			valueStep = 2,
 		},
