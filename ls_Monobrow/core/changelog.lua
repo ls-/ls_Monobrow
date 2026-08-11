@@ -6,6 +6,6 @@ local _G = getfenv(0)
 
 -- Mine
 addon.CHANGELOG = [[
-- Added 12.0.7 support.
-- Slightly reworked Neighborhood Initiatives. The bar now shows the actual amount of contributions instead of normalised values provided by Blizz.
+- Added 12.1.0 support.
+- Reduced the minimum height of the bar to 4px.
 ]]

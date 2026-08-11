@@ -1,5 +1,10 @@
 # CHANGELOG
 
+## Version 120100.01
+
+- Added 12.1.0 support.
+- Reduced the minimum height of the bar to 4px.
+
 ## Version 120007.01
 
 - Added 12.0.7 support.
