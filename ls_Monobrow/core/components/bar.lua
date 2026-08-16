@@ -13,8 +13,8 @@ local CUR_MAX_PERC_VALUE_TEMPLATE = "%s / %s (%.1f%%)"
 local CUR_MAX_VALUE_TEMPLATE = "%s / %s"
 
 local houseInfoCache = {}
-local initiativeInfo
-local perksActivitiesInfo
+local initiativeInfoCache
+local perksActivitiesInfoCache
 
 local bar_proto = {}
 
@@ -142,10 +142,13 @@ do
 
 			-- Travel Points
 			if C.db.char.travel_points then
-				if perksActivitiesInfo then
+				if perksActivitiesInfoCache then
 					index = index + 1
 
-					self[index]:UpdateTravelPoints(perksActivitiesInfo)
+					self[index]:UpdateTravelPoints(perksActivitiesInfoCache)
+				else
+					-- try to force it
+					self:OnEvent("PERKS_ACTIVITIES_UPDATED")
 				end
 			end
 
@@ -159,10 +162,10 @@ do
 
 			-- Neighborhood Initiative
 			if C.db.char.endeavor then
-				if initiativeInfo and initiativeInfo.isLoaded then
+				if initiativeInfoCache then
 					index = index + 1
 
-					self[index]:UpdateNeighborhoodInitiative(initiativeInfo)
+					self[index]:UpdateNeighborhoodInitiative(initiativeInfoCache)
 				else
 					C_NeighborhoodInitiative.RequestNeighborhoodInitiativeInfo()
 				end
@@ -280,14 +283,22 @@ do
 				C_Housing.GetCurrentHouseLevelFavor(guid)
 			end
 		elseif event == "PERKS_ACTIVITIES_UPDATED" then
-			perksActivitiesInfo = C_PerksActivities.GetPerksActivitiesInfo()
-			if perksActivitiesInfo and not timer then
-				timer = C_Timer.NewTimer(0.1, deferredUpdate)
+			local perksActivitiesInfo = C_PerksActivities.GetPerksActivitiesInfo()
+			if perksActivitiesInfo and next(perksActivitiesInfo.activities) then
+				perksActivitiesInfoCache = perksActivitiesInfo
+
+				if not timer then
+					timer = C_Timer.NewTimer(0.1, deferredUpdate)
+				end
 			end
 		elseif event == "NEIGHBORHOOD_INITIATIVE_UPDATED" then
-			initiativeInfo = C_NeighborhoodInitiative.GetNeighborhoodInitiativeInfo()
-			if initiativeInfo and initiativeInfo.isLoaded and not timer then
-				timer = C_Timer.NewTimer(0.1, deferredUpdate)
+			local initiativeInfo = C_NeighborhoodInitiative.GetNeighborhoodInitiativeInfo()
+			if initiativeInfo and initiativeInfo.isLoaded then
+				initiativeInfoCache = initiativeInfo
+
+				if not timer then
+					timer = C_Timer.NewTimer(0.1, deferredUpdate)
+				end
 			end
 		else
 			if not timer then
