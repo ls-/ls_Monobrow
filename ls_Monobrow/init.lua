@@ -163,7 +163,7 @@ addon:RegisterEvent("ADDON_LOADED", function(arg)
 		end
 
 		EventUtil.ContinueOnAddOnLoaded("Blizzard_EncounterJournal", function()
-			local button = createWatchButton(EncounterJournal.MonthlyActivitiesFrame.ThresholdContainer)
+			local button = createWatchButton(EncounterJournal.MonthlyActivitiesFrame)
 			button:SetPoint("BOTTOMRIGHT", EncounterJournal.MonthlyActivitiesFrame.ThresholdContainer.ThresholdBar, "TOPRIGHT", -14, 0)
 			button:SetScript("OnShow", function(self)
 				self:SetChecked(C.db.char.travel_points)
