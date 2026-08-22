@@ -6,6 +6,6 @@ local _G = getfenv(0)
 
 -- Mine
 addon.CHANGELOG = [[
-- Added 12.1.0 support.
-- Reduced the minimum height of the bar to 4px.
+- Made Travel Points tracking more reliable.
+- The "Show as Experience Bar" toggle for travel points should stay visible even when the bar is hidden.
 ]]
