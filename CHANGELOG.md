@@ -1,5 +1,9 @@
 # CHANGELOG
 
+## Version 120105.01
+
+- Added 12.1.5 support.
+
 ## Version 120100.02
 
 - Made Travel Points tracking more reliable.
