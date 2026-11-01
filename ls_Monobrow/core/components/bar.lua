@@ -123,6 +123,7 @@ do
 				self[i].tooltipInfo = nil
 			end
 
+			self:SetAlpha(1)
 			self:Show()
 
 			self.total = nil
