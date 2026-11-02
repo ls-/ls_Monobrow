@@ -1,5 +1,10 @@
 # CHANGELOG
 
+## Version 120105.02
+
+- The bar should now be properly shown upon entering Edit Mode.
+- Added a dialog for more precise position controls while in Edit Mode. It's not pixel-perfect yet tho.
+
 ## Version 120105.01
 
 - Added 12.1.5 support.
