@@ -8,8 +8,39 @@
 
 ## X-Curse-Project-ID: 1439348
 
-embeds\_embeds.xml
-core\_core.xml
-locales\_locales.xml
+embeds\LibStub\LibStub.lua
+embeds\CallbackHandler-1.0\CallbackHandler-1.0.xml
+embeds\AceDB-3.0\AceDB-3.0.xml
+embeds\LibSharedMedia-3.0\LibSharedMedia-3.0.lua
+embeds\LibEditMode\namespaced.lua
+embeds\LibEditMode\embed.xml
+embeds\AceDBOptions-3.0\AceDBOptions-3.0.xml
+embeds\AceGUI-3.0\AceGUI-3.0.xml
+embeds\AceConfig-3.0\AceConfig-3.0.xml
+embeds\AceGUI-3.0-SharedMediaWidgets\widget.xml
+
+core\core.lua
+core\defaults.lua
+core\modernize.lua
+core\components\bar.lua
+core\components\border.lua
+core\components\fader.lua
+core\components\font.lua
+core\components\segment.lua
+core\changelog.lua
+core\config.lua
+core\ie.lua
+
+locales\enUS.lua
+locales\deDE.lua
+locales\esES.lua
+locales\esMX.lua
+locales\frFR.lua
+locales\itIT.lua
+locales\koKR.lua
+locales\ptBR.lua
+locales\ruRU.lua
+locales\zhCN.lua
+locales\zhTW.lua
 
 init.lua
