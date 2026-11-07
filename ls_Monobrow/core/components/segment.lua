@@ -9,12 +9,6 @@ local m_min = _G.math.min
 local next = _G.next
 
 -- Mine
-local ARTIFACT_LEVEL_TEMPLATE = _G.ARTIFACTS_NUM_PURCHASED_RANKS:gsub("%%d", "|cffffffff%%d|r")
-local HONOR_TEMPLATE = _G.LFG_LIST_HONOR_LEVEL_CURRENT_PVP:gsub("%%d", "|cffffffff%%d|r")
-local RENOWN_PLUS = _G.LANDING_PAGE_RENOWN_LABEL .. "+"
-local REPUTATION_TEMPLATE = _G.SUBTITLE_FORMAT -- because of language specific ":" and "："
-local TIME_REMAINING = _G.TIME_REMAINING_WITH_TIME:format("|cffffffff%s|r")
-
 local segment_base_proto = {}
 do
 	function segment_base_proto:SetSmoothStatusBarColor(r, g, b, a)
@@ -143,16 +137,10 @@ do
 		end
 	end
 
-	function segment_ext_proto:UpdateAzerite(item)
-		local cur, max = C_AzeriteItem.GetAzeriteItemXPInfo(item)
-		local level = C_AzeriteItem.GetPowerLevel(item)
+	function segment_ext_proto:UpdateDummy()
+		self.tooltipInfo = nil
 
-		self.tooltipInfo = {
-			header = _G.WORLD_QUEST_REWARD_FILTERS_ARTIFACT_POWER,
-			line1 = ARTIFACT_LEVEL_TEMPLATE:format(level),
-		}
-
-		self:Update(cur, max, 0, ITEM_QUALITY_COLORS[6].color)
+		self:Update(100, 300, 150, C.db.global.colors.xp[1])
 	end
 
 	function segment_ext_proto:UpdateXP()
@@ -178,16 +166,8 @@ do
 		self:Update(cur, max, bonus, bonus > 0 and C.db.global.colors.xp[1] or C.db.global.colors.xp[2])
 	end
 
-	function segment_ext_proto:UpdateHonor()
-		local cur, max = UnitHonor("player"), UnitHonorMax("player")
-
-		self.tooltipInfo = {
-			header = _G.HONOR,
-			line1 = HONOR_TEMPLATE:format(UnitHonorLevel("player")),
-		}
-
-		self:Update(cur, max, 0, C.db.global.colors.faction[UnitFactionGroup("player")])
-	end
+	local RENOWN_PLUS = _G.LANDING_PAGE_RENOWN_LABEL .. "+"
+	local REPUTATION_TEMPLATE = _G.SUBTITLE_FORMAT -- because of language specific ":" and "："
 
 	function segment_ext_proto:UpdateReputation(name, standing, repMin, repMax, repCur, factionID)
 		local repTextLevel = GetText("FACTION_STANDING_LABEL" .. standing, UnitSex("player"))
@@ -260,100 +240,139 @@ do
 		self:Update(cur, max, 0, C.db.global.colors.reaction[standing])
 	end
 
-	function segment_ext_proto:UpdateHouseXP(data)
-		local level = data.houseLevel
-		local cur = data.houseFavor
-		local min = C_Housing.GetHouseLevelFavorForLevel(level)
-		local max = C_Housing.GetHouseLevelFavorForLevel(level + 1)
+	if addon.GAMEVERSION.Midnight then
+		local HONOR_TEMPLATE = _G.LFG_LIST_HONOR_LEVEL_CURRENT_PVP:gsub("%%d", "|cffffffff%%d|r")
 
-		-- at level 0, all values are 0, but you're promted to upgrade anyway
-		if max == 0 then
-			cur = 1
-			max = 1
+		function segment_ext_proto:UpdateHonor()
+			local cur, max = UnitHonor("player"), UnitHonorMax("player")
+
+			self.tooltipInfo = {
+				header = _G.HONOR,
+				line1 = HONOR_TEMPLATE:format(UnitHonorLevel("player")),
+			}
+
+			self:Update(cur, max, 0, C.db.global.colors.faction[UnitFactionGroup("player")])
 		end
 
-		self.tooltipInfo = {
-			header = _G.HOUSING_DASHBOARD_NEIGHBORHOOD_FAVOR_LABEL,
-		}
+		function segment_ext_proto:UpdateHouseXP(data)
+			local level = data.houseLevel
+			local cur = data.houseFavor
+			local min = C_Housing.GetHouseLevelFavorForLevel(level)
+			local max = C_Housing.GetHouseLevelFavorForLevel(level + 1)
 
-		if data.houseName then
-			self.tooltipInfo.line1 = data.houseName
-			self.tooltipInfo.line2 = L["LEVEL_TOOLTIP"]:format(level)
-		else
-			self.tooltipInfo.line1 = L["LEVEL_TOOLTIP"]:format(level)
-		end
-
-		if cur >= max then
-			self.tooltipInfo.line3 = _G.HOUSING_DASHBOARD_VISIT_NPC
-		end
-
-		self:Update(cur - min, max - min, 0, C.db.global.colors.house)
-	end
-
-	function segment_ext_proto:UpdateTravelPoints(data)
-		-- TODO: implement pending rewards
-		-- local pendingRewards = C_PerksProgram.GetPendingChestRewards()
-
-		local cur = 0
-		for _, activity in next, data.activities do
-			if activity.completed then
-				cur = cur + activity.thresholdContributionAmount
-			end
-		end
-
-		local max = 0
-		for _, thresholdInfo in next, data.thresholds do
-			if thresholdInfo.requiredContributionAmount > max then
-				max = thresholdInfo.requiredContributionAmount
-			end
-		end
-
-		self.tooltipInfo = {
-			header = _G.MONTHLY_ACTIVITIES_POINTS,
-			line1 = data.displayMonthName,
-			line2 = TIME_REMAINING:format(SecondsToTime(data.secondsRemaining)),
-		}
-
-		self:Update(m_min(cur, max), max, 0, C.db.global.colors.travel_points)
-	end
-
-	function segment_ext_proto:UpdateNeighborhoodInitiative(data)
-		-- .progressRequired and .currentProgress are weird normalised values
-		local max = data.progressRequired
-		if max == 0 then
-			max = 1
-		end
-
-		local mult = 1
-		if max > 1 then
-			local total = 0
-
-			for i = 1, #data.milestones do
-				total = total + data.milestones[i].requiredContributionAmount
+			-- at level 0, all values are 0, but you're promted to upgrade anyway
+			if max == 0 then
+				cur = 1
+				max = 1
 			end
 
-			mult = total / max
-			max = total
+			self.tooltipInfo = {
+				header = _G.HOUSING_DASHBOARD_NEIGHBORHOOD_FAVOR_LABEL,
+			}
+
+			if data.houseName then
+				self.tooltipInfo.line1 = data.houseName
+				self.tooltipInfo.line2 = L["LEVEL_TOOLTIP"]:format(level)
+			else
+				self.tooltipInfo.line1 = L["LEVEL_TOOLTIP"]:format(level)
+			end
+
+			if cur >= max then
+				self.tooltipInfo.line3 = _G.HOUSING_DASHBOARD_VISIT_NPC
+			end
+
+			self:Update(cur - min, max - min, 0, C.db.global.colors.house)
 		end
 
-		local cur = m_floor(data.currentProgress * mult)
-		if cur == 0 then
-			cur = 1
+		local TIME_REMAINING = _G.TIME_REMAINING_WITH_TIME:format("|cffffffff%s|r")
+
+		function segment_ext_proto:UpdateTravelPoints(data)
+			-- TODO: implement pending rewards
+			-- local pendingRewards = C_PerksProgram.GetPendingChestRewards()
+
+			local cur = 0
+			for _, activity in next, data.activities do
+				if activity.completed then
+					cur = cur + activity.thresholdContributionAmount
+				end
+			end
+
+			local max = 0
+			for _, thresholdInfo in next, data.thresholds do
+				if thresholdInfo.requiredContributionAmount > max then
+					max = thresholdInfo.requiredContributionAmount
+				end
+			end
+
+			self.tooltipInfo = {
+				header = _G.MONTHLY_ACTIVITIES_POINTS,
+				line1 = data.displayMonthName,
+				line2 = TIME_REMAINING:format(SecondsToTime(data.secondsRemaining)),
+			}
+
+			self:Update(m_min(cur, max), max, 0, C.db.global.colors.travel_points)
 		end
 
-		self.tooltipInfo = {
-			header = _G.ENDEAVOR_FAVOR,
-			line1 = data.title,
-			line2 = TIME_REMAINING:format(SecondsToTime(data.duration)),
-		}
+		function segment_ext_proto:UpdateNeighborhoodInitiative(data)
+			-- .progressRequired and .currentProgress are weird normalised values
+			local max = data.progressRequired
+			if max == 0 then
+				max = 1
+			end
 
-		self:Update(m_min(cur, max), max, 0, C.db.global.colors.endeavor)
+			local mult = 1
+			if max > 1 then
+				local total = 0
+
+				for i = 1, #data.milestones do
+					total = total + data.milestones[i].requiredContributionAmount
+				end
+
+				mult = total / max
+				max = total
+			end
+
+			local cur = m_floor(data.currentProgress * mult)
+			if cur == 0 then
+				cur = 1
+			end
+
+			self.tooltipInfo = {
+				header = _G.ENDEAVOR_FAVOR,
+				line1 = data.title,
+				line2 = TIME_REMAINING:format(SecondsToTime(data.duration)),
+			}
+
+			self:Update(m_min(cur, max), max, 0, C.db.global.colors.endeavor)
+		end
+
+		local ARTIFACT_LEVEL_TEMPLATE = _G.ARTIFACTS_NUM_PURCHASED_RANKS:gsub("%%d", "|cffffffff%%d|r")
+
+		function segment_ext_proto:UpdateAzerite(item)
+			local cur, max = C_AzeriteItem.GetAzeriteItemXPInfo(item)
+			local level = C_AzeriteItem.GetPowerLevel(item)
+
+			self.tooltipInfo = {
+				header = _G.WORLD_QUEST_REWARD_FILTERS_ARTIFACT_POWER,
+				line1 = ARTIFACT_LEVEL_TEMPLATE:format(level),
+			}
+
+			self:Update(cur, max, 0, ITEM_QUALITY_COLORS[6].color)
+		end
 	end
 
-	function segment_ext_proto:UpdateDummy()
-		self.tooltipInfo = nil
+	if addon.GAMEVERSION.Forever then
+		local PVP_RANK_TEMPLATE = _G.PVP_RANK_NUMBER:gsub("%%d", ""):trim() .. _G.HEADER_COLON .. " |cffffffff%d|r"
+		local RANK_POINTS = _G.PVP_RANK_CURRENT_PROGRESS:match("(.-)[:：]")
 
-		self:Update(100, 300, 150, C.db.global.colors.xp[1])
+		function segment_ext_proto:UpdatePvPRank(data)
+			self.tooltipInfo = {
+				header = RANK_POINTS,
+				line1 = PVP_RANK_TEMPLATE:format(data.renownLevel),
+			}
+
+			self:Update(data.renownReputationEarned, data.renownLevelThreshold, 0, C.db.global.colors.faction[UnitFactionGroup("player")])
+		end
 	end
 
 	function segment_ext_proto:UpdateText(cur, max)

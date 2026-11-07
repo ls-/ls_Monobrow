@@ -94,19 +94,14 @@ addon:RegisterEvent("ADDON_LOADED", function(arg)
 
 		bar:UpdateTextures()
 
-		-- fetch and cache the tracked house data
-		local guid = C_Housing.GetTrackedHouseGuid()
-		if guid then
-			C_Housing.GetCurrentHouseLevelFavor(guid)
-		end
+		if addon.GAMEVERSION.Midnight then
+			-- fetch and cache the tracked house data
+			local guid = C_Housing.GetTrackedHouseGuid()
+			if guid then
+				C_Housing.GetCurrentHouseLevelFavor(guid)
+			end
 
-		-- Honour & Rep Hooks
-		-- this way I'm able to show honour and reputation bars simultaneously, in the default UI enabling honour tracking
-		-- resets faction tracking
-		local isHonorBarHooked = false
-
-		EventUtil.ContinueOnAddOnLoaded("Blizzard_PVPUI", function()
-			if not isHonorBarHooked then
+			EventUtil.ContinueOnAddOnLoaded("Blizzard_PVPUI", function()
 				for _, panel in next, {"CasualPanel", "RatedPanel", "TrainingGroundsPanel"} do
 					PVPQueueFrame.HonorInset[panel].HonorLevelDisplay:SetScript("OnMouseUp", function()
 						if IsShiftKeyDown() then
@@ -132,10 +127,96 @@ addon:RegisterEvent("ADDON_LOADED", function(arg)
 						GameTooltip:Hide()
 					end)
 				end
+			end)
 
-				isHonorBarHooked = true
+			local function createWatchButton(parent)
+				local button = CreateFrame("CheckButton", "$parentWatchButton", parent, "UICheckButtonArtTemplate")
+				button:SetSize(21, 21)
+
+				local label = button:CreateFontString(nil, "ARTWORK", "GameFontHighlightSmall")
+				label:SetPoint("RIGHT", button, "LEFT", 0, 0)
+				label:SetText(_G.MAJOR_FACTION_WATCH_FACTION_BUTTON_LABEL)
+				label:SetJustifyH("LEFT")
+				button.Label = label
+
+				return button
 			end
-		end)
+
+			EventUtil.ContinueOnAddOnLoaded("Blizzard_EncounterJournal", function()
+				local button = createWatchButton(EncounterJournal.MonthlyActivitiesFrame)
+				button:SetPoint("BOTTOMRIGHT", EncounterJournal.MonthlyActivitiesFrame.ThresholdContainer.ThresholdBar, "TOPRIGHT", -14, 0)
+				button:SetScript("OnShow", function(self)
+					self:SetChecked(C.db.char.travel_points)
+				end)
+				button:SetScript("OnClick", function(self)
+					C.db.char.travel_points = not C.db.char.travel_points
+					self:GetChecked(C.db.char.travel_points)
+
+					if self:GetChecked() then
+						PlaySound(SOUNDKIT.IG_MAINMENU_OPTION_CHECKBOX_ON)
+					else
+						PlaySound(SOUNDKIT.IG_MAINMENU_OPTION_CHECKBOX_OFF)
+					end
+
+					bar:UpdateSegments()
+				end)
+			end)
+
+			EventUtil.ContinueOnAddOnLoaded("Blizzard_HousingDashboard", function()
+				local button = createWatchButton(HousingDashboardFrame.HouseInfoContent.ContentFrame.InitiativesFrame.InitiativeSetFrame)
+				button:SetPoint("BOTTOMRIGHT", HousingDashboardFrame.HouseInfoContent.ContentFrame.InitiativesFrame.InitiativeSetFrame.ProgressBar, "TOPRIGHT", 0, 0)
+				button:SetScript("OnShow", function(self)
+					self:SetChecked(C.db.char.endeavor)
+				end)
+				button:SetScript("OnClick", function(self)
+					C.db.char.endeavor = not C.db.char.endeavor
+					self:GetChecked(C.db.char.endeavor)
+
+					if self:GetChecked() then
+						PlaySound(SOUNDKIT.IG_MAINMENU_OPTION_CHECKBOX_ON)
+					else
+						PlaySound(SOUNDKIT.IG_MAINMENU_OPTION_CHECKBOX_OFF)
+					end
+
+					bar:UpdateSegments()
+				end)
+			end)
+		end
+
+		if addon.GAMEVERSION.Forever then
+			local function createWatchButton(parent)
+				local button = CreateFrame("CheckButton", "$parentWatchButton", parent, "MinimalCheckboxArtTemplate")
+				button:SetSize(26, 26)
+
+				local label = button:CreateFontString(nil, "ARTWORK", "GameFontNormal")
+				label:SetPoint("LEFT", button, "RIGHT", 2, 0)
+				label:SetText(_G.SHOW_FACTION_ON_MAINSCREEN)
+				label:SetJustifyH("LEFT")
+				button.Label = label
+
+				return button
+			end
+
+			if PVPRankFrame and PVPRankFrame.DetailFrame then
+				PVPRankFrame.DetailFrame.Footer:SetHeight(52)
+
+				local checkbox = createWatchButton(PVPRankFrame.DetailFrame)
+				checkbox:SetPoint("TOPLEFT", PVPRankFrame.DetailFrame.Footer, "TOPLEFT", -4, 0)
+				checkbox:SetChecked(C.db.char.rank_points)
+				checkbox:SetScript("OnClick", function(self)
+					C.db.char.rank_points = not C.db.char.rank_points
+					self:GetChecked(C.db.char.rank_points)
+
+					if self:GetChecked() then
+						PlaySound(SOUNDKIT.IG_MAINMENU_OPTION_CHECKBOX_ON)
+					else
+						PlaySound(SOUNDKIT.IG_MAINMENU_OPTION_CHECKBOX_OFF)
+					end
+
+					bar:UpdateSegments()
+				end)
+			end
+		end
 
 		ReputationFrame.ReputationDetailFrame.WatchFactionCheckbox:SetScript("OnClick", function(self)
 			if self:GetChecked() then
@@ -147,59 +228,6 @@ addon:RegisterEvent("ADDON_LOADED", function(arg)
 			end
 
 			bar:UpdateSegments()
-		end)
-
-		local function createWatchButton(parent)
-			local button = CreateFrame("CheckButton", "$parentWatchButton", parent, "UICheckButtonArtTemplate")
-			button:SetSize(21, 21)
-
-			local label = button:CreateFontString(nil, "ARTWORK", "GameFontHighlightSmall")
-			label:SetPoint("RIGHT", button, "LEFT", 0, 0)
-			label:SetText(_G.MAJOR_FACTION_WATCH_FACTION_BUTTON_LABEL)
-			label:SetJustifyH("LEFT")
-			button.Label = label
-
-			return button
-		end
-
-		EventUtil.ContinueOnAddOnLoaded("Blizzard_EncounterJournal", function()
-			local button = createWatchButton(EncounterJournal.MonthlyActivitiesFrame)
-			button:SetPoint("BOTTOMRIGHT", EncounterJournal.MonthlyActivitiesFrame.ThresholdContainer.ThresholdBar, "TOPRIGHT", -14, 0)
-			button:SetScript("OnShow", function(self)
-				self:SetChecked(C.db.char.travel_points)
-			end)
-			button:SetScript("OnClick", function(self)
-				C.db.char.travel_points = not C.db.char.travel_points
-				self:GetChecked(C.db.char.travel_points)
-
-				if self:GetChecked() then
-					PlaySound(SOUNDKIT.IG_MAINMENU_OPTION_CHECKBOX_ON)
-				else
-					PlaySound(SOUNDKIT.IG_MAINMENU_OPTION_CHECKBOX_OFF)
-				end
-
-				bar:UpdateSegments()
-			end)
-		end)
-
-		EventUtil.ContinueOnAddOnLoaded("Blizzard_HousingDashboard", function()
-			local button = createWatchButton(HousingDashboardFrame.HouseInfoContent.ContentFrame.InitiativesFrame.InitiativeSetFrame)
-			button:SetPoint("BOTTOMRIGHT", HousingDashboardFrame.HouseInfoContent.ContentFrame.InitiativesFrame.InitiativeSetFrame.ProgressBar, "TOPRIGHT", 0, 0)
-			button:SetScript("OnShow", function(self)
-				self:SetChecked(C.db.char.endeavor)
-			end)
-			button:SetScript("OnClick", function(self)
-				C.db.char.endeavor = not C.db.char.endeavor
-				self:GetChecked(C.db.char.endeavor)
-
-				if self:GetChecked() then
-					PlaySound(SOUNDKIT.IG_MAINMENU_OPTION_CHECKBOX_ON)
-				else
-					PlaySound(SOUNDKIT.IG_MAINMENU_OPTION_CHECKBOX_OFF)
-				end
-
-				bar:UpdateSegments()
-			end)
 		end)
 	end)
 end)

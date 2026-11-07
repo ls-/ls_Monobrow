@@ -262,8 +262,7 @@ do
 			-- hardcode it because of classic vs retail diffs
 			frame.Tabs[1] = tab
 
-			-- classic specific adjustments
-			if GetClientDisplayExpansionLevel() < 3 then
+			if addon.GAMEVERSION.Vanilla or addon.GAMEVERSION.BurningCrusade then
 				scrollFrame:SetPoint("BOTTOMRIGHT", -12, 59)
 
 				scrollFrame.EditBox:SetWidth(scrollFrame:GetWidth() - 26)
@@ -284,6 +283,7 @@ do
 				importButton:SetPoint("BOTTOMRIGHT", -4, 6)
 
 				importButton:SetPoint("BOTTOMRIGHT", -6, 2)
+			elseif addon.GAMEVERSION.Forever then
 			end
 		end
 
@@ -343,8 +343,7 @@ do
 			-- hardcode it because of classic vs retail diffs
 			frame.Tabs[2] = tab
 
-			-- classic specific adjustments
-			if GetClientDisplayExpansionLevel() < 3 then
+			if addon.GAMEVERSION.Vanilla or addon.GAMEVERSION.BurningCrusade then
 				scrollFrame:SetPoint("BOTTOMRIGHT", -12, 12)
 
 				scrollFrame.EditBox:SetWidth(scrollFrame:GetWidth() - 26)
@@ -362,8 +361,7 @@ do
 		PanelTemplates_SetNumTabs(frame, 2)
 		PanelTemplates_SetTab(frame, 1)
 
-		-- classic specific adjustments
-		if GetClientDisplayExpansionLevel() < 3 then
+		if addon.GAMEVERSION.Vanilla or addon.GAMEVERSION.BurningCrusade then
 			frame.Bg:SetPoint("BOTTOMRIGHT", -2, 6)
 			frame.NineSlice.RightEdge:SetPointsOffset(1, 0)
 
@@ -372,6 +370,7 @@ do
 
 			frame.Tabs[2]:SetPoint("TOPLEFT", frame.Tabs[1], "TOPRIGHT", -14, 0)
 			frame.Tabs[2]:SetFrameLevel(frame.NineSlice:GetFrameLevel() + 1)
+		elseif addon.GAMEVERSION.Forever then
 		end
 	end
 
