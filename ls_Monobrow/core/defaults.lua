@@ -150,10 +150,10 @@ D.char = {
 }
 
 if addon.GAMEVERSION.Forever then
-	D.profile.border.color = {r = 1, g = 0.82, b = 0, a = 1}
+	D.profile.border.color = {r = 1, g = 0.76, b = 0.6, a = 1}
 
 	D.profile.layouts["*"].width = 1192
-	D.profile.layouts["*"].point = {point = "BOTTOM", x = 0, y = 52}
+	D.profile.layouts["*"].point = {point = "BOTTOM", x = -6, y = 52}
 
 	D.char.rank_points = false
 end
