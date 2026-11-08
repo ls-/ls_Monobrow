@@ -266,7 +266,7 @@ function addon:PurgeKey(t, k)
 end
 
 do
-	local hiddenFrame = CreateFrame("Frame", nil, UIParent), frame_proto
+	local hiddenFrame = CreateFrame("Frame", nil, UIParent)
 	hiddenFrame:Hide()
 
 	function addon:ForceHide(object, doNotReparent)
