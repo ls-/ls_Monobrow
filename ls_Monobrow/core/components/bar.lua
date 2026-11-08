@@ -141,42 +141,56 @@ do
 				self[index]:UpdateXP()
 			end
 
-			-- Travel Points
-			if C.db.char.travel_points then
-				if perksActivitiesInfoCache then
+			if addon.GAMEVERSION.Midnight then
+				-- Travel Points
+				if C.db.char.travel_points then
+					if perksActivitiesInfoCache then
+						index = index + 1
+
+						self[index]:UpdateTravelPoints(perksActivitiesInfoCache)
+					else
+						-- try to force it
+						self:OnEvent("PERKS_ACTIVITIES_UPDATED")
+					end
+				end
+
+				-- House Favour
+				local guid = C_Housing.GetTrackedHouseGuid()
+				if guid and houseInfoCache[guid] and houseInfoCache[guid].houseLevel then
 					index = index + 1
 
-					self[index]:UpdateTravelPoints(perksActivitiesInfoCache)
-				else
-					-- try to force it
-					self:OnEvent("PERKS_ACTIVITIES_UPDATED")
+					self[index]:UpdateHouseXP(houseInfoCache[guid])
+				end
+
+				-- Neighborhood Initiative
+				if C.db.char.endeavor then
+					if initiativeInfoCache then
+						index = index + 1
+
+						self[index]:UpdateNeighborhoodInitiative(initiativeInfoCache)
+					else
+						C_NeighborhoodInitiative.RequestNeighborhoodInitiativeInfo()
+					end
+				end
+
+				-- Honour
+				if IsWatchingHonorAsXP() or C_PvP.IsActiveBattlefield() or IsInActiveWorldPVP() then
+					index = index + 1
+
+					self[index]:UpdateHonor()
 				end
 			end
 
-			-- House Favour
-			local guid = C_Housing.GetTrackedHouseGuid()
-			if guid and houseInfoCache[guid] and houseInfoCache[guid].houseLevel then
-				index = index + 1
+			if addon.GAMEVERSION.Forever then
+				-- PvP Rank
+				if C.db.char.rank_points then
+					local info = C_MajorFactions.GetMajorFactionProgressionInfo(2800)
+					if info then
+						index = index + 1
 
-				self[index]:UpdateHouseXP(houseInfoCache[guid])
-			end
-
-			-- Neighborhood Initiative
-			if C.db.char.endeavor then
-				if initiativeInfoCache then
-					index = index + 1
-
-					self[index]:UpdateNeighborhoodInitiative(initiativeInfoCache)
-				else
-					C_NeighborhoodInitiative.RequestNeighborhoodInitiativeInfo()
+						self[index]:UpdatePvPRank(info)
+					end
 				end
-			end
-
-			-- Honour
-			if IsWatchingHonorAsXP() or C_PvP.IsActiveBattlefield() or IsInActiveWorldPVP() then
-				index = index + 1
-
-				self[index]:UpdateHonor()
 			end
 
 			-- Reputation
@@ -187,13 +201,15 @@ do
 				self[index]:UpdateReputation(data.name, data.reaction, data.currentReactionThreshold, data.nextReactionThreshold, data.currentStanding, data.factionID)
 			end
 
-			-- Azerite
-			if not C_AzeriteItem.IsAzeriteItemAtMaxLevel() then
-				local azeriteItem = C_AzeriteItem.FindActiveAzeriteItem()
-				if azeriteItem and azeriteItem:IsEquipmentSlot() and C_AzeriteItem.IsAzeriteItemEnabled(azeriteItem) then
-					index = index + 1
+			if addon.GAMEVERSION.Midnight then
+				-- Azerite
+				if not C_AzeriteItem.IsAzeriteItemAtMaxLevel() then
+					local azeriteItem = C_AzeriteItem.FindActiveAzeriteItem()
+					if azeriteItem and azeriteItem:IsEquipmentSlot() and C_AzeriteItem.IsAzeriteItemEnabled(azeriteItem) then
+						index = index + 1
 
-					self[index]:UpdateAzerite(azeriteItem)
+						self[index]:UpdateAzerite(azeriteItem)
+					end
 				end
 			end
 		end
