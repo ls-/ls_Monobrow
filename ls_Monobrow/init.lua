@@ -84,8 +84,8 @@ addon:RegisterEvent("ADDON_LOADED", function(arg)
 	end
 
 	hideBar(StatusTrackingBarManager)
-	hideBar(MainStatusTrackingBarContainer)
-	hideBar(SecondaryStatusTrackingBarContainer)
+	hideBar(MainStatusTrackingBarContainer, true)
+	hideBar(SecondaryStatusTrackingBarContainer, true)
 
 	addon:RegisterEvent("PLAYER_LOGIN", function()
 		addon.Bar:UpdateBorderTexture()

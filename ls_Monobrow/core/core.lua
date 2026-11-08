@@ -266,16 +266,10 @@ function addon:PurgeKey(t, k)
 end
 
 do
-	local frame_proto = {}
-	do
-		function frame_proto:CheckForLayoutChange()
-		end
-	end
-
-	local hiddenFrame = Mixin(CreateFrame("Frame", nil, UIParent), frame_proto)
+	local hiddenFrame = CreateFrame("Frame", nil, UIParent), frame_proto
 	hiddenFrame:Hide()
 
-	function addon:ForceHide(object)
+	function addon:ForceHide(object, doNotReparent)
 		if not object then return end
 
 		-- EditMode bs
@@ -299,6 +293,8 @@ do
 			pcall(object.SetDontSavePosition, object, true)
 		end
 
-		object:SetParent(hiddenFrame)
+		if not doNotReparent then
+			object:SetParent(hiddenFrame)
+		end
 	end
 end
