@@ -7,7 +7,6 @@ local _G = getfenv(0)
 local next = _G.next
 local s_format = _G.string.format
 local t_insert = _G.table.insert
-local t_wipe = _G.table.wipe
 
 -- Mine
 local defaultLayouts = {}
@@ -17,10 +16,10 @@ for name in next, Enum.EditModePresetLayouts do
 end
 
 local function wipe(layoutName)
+	C.db.profile.layouts[layoutName] = nil
+
+	-- AceDB takes care of layout table duplication
 	local layout = C.db.profile.layouts[layoutName]
-	for k in next, layout do
-		t_wipe(layout[k])
-	end
 end
 
 local function getLayoutList()
