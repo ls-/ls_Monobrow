@@ -32,6 +32,7 @@ core\components\segment.lua
 core\changelog.lua
 core\config.lua
 core\ie.lua
+core\manager.lua
 
 locales\enUS.lua
 locales\deDE.lua

@@ -4,10 +4,25 @@ local C, D, L, LEM = addon.C, addon.D, addon.L, addon.LibEditMode
 -- Lua
 local _G = getfenv(0)
 local ipairs = _G.ipairs
+local next = _G.next
 
 -- Mine
+local DEFAULT_PRESET
+local defaultIndex = 0
+if C_EditMode.GetEditModeDefaultLayout then
+	defaultIndex = C_EditMode.GetEditModeDefaultLayout()
+elseif Constants.EditModeLayoutConsts then
+	defaultIndex = Constants.EditModeLayoutConsts.EditModeDefaultLayout
+end
+
+for k, v in next, Enum.EditModePresetLayouts do
+	if v == defaultIndex then
+		DEFAULT_PRESET = k
+	end
+end
+
 function addon:GetLayout()
-	return C.db.profile.layouts[LEM:GetActiveLayoutName() or "Modern"]
+	return C.db.profile.layouts[LEM:GetActiveLayoutName() or DEFAULT_PRESET]
 end
 
 function addon:GetDefaultLayout()

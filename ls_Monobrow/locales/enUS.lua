@@ -37,3 +37,14 @@ L["SHADOW"] = "Shadow"
 L["SHIFT_CLICK_TO_SHOW_AS_XP"] = "|cffffffffShift click|r to show as experience bar."
 L["SUPPORT_FEEDBACK"] = "Support & Feedback"
 L["TEXTURE"] = "Texture"
+
+L["COPY_LAYOUT_DESC"] = "Copy the settings from another layout into the current layout."
+L["DELETE_LAYOUT_DESC"] = "Delete the settings of another layout."
+L["IMPORT_INSTRUCTIONS"] = "The imported layout data will be tied to the currently active Edit Mode layout."
+L["LAYOUT"] = "Layout"
+L["LAYOUTS"] = "Layouts"
+L["LAYOUTS_DESC"] = [=[Here you can reset, copy, and delete the settings tied to your Edit Mode layouts.
+Please note, all of this data is stored in your current profile.]=]
+L["PROFILE_AND_LAYOUT"] = "Profile & Layout"
+L["RESET_LAYOUT"] = "Reset |cffffffff\"%s\"|r"
+L["RESET_LAYOUT_DESC"] = "Reset the settings of the current layout to their defaults."
