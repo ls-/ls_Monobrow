@@ -1,5 +1,11 @@
 # CHANGELOG
 
+## Version 120105.03
+
+- Added WoW Forever support.
+- Added support for PvP Rank Points.
+- Added the layout info manager akin to the profile manager. Located in Options > AddOns > LS: Monobrow > Layouts.
+
 ## Version 120105.02
 
 - The bar should now be properly shown upon entering Edit Mode.
