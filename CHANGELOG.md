@@ -1,5 +1,9 @@
 # CHANGELOG
 
+## Version 120105.04
+
+- Separate retail and forever code a bit better.
+
 ## Version 120105.03
 
 - Added WoW Forever support.
