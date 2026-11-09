@@ -94,7 +94,7 @@ addon:RegisterEvent("ADDON_LOADED", function(arg)
 
 		bar:UpdateTextures()
 
-		if addon.GAMEVERSION.Midnight then
+		if addon.GAMEVERSION.Standard then
 			-- fetch and cache the tracked house data
 			local guid = C_Housing.GetTrackedHouseGuid()
 			if guid then

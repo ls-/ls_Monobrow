@@ -21,25 +21,28 @@ addon.C, addon.D, addon.L = C, D, L
 -- CONSTS --
 ------------
 
-local _, _, _, toc = GetBuildInfo()
-addon.GAMEVERSION = {
-	[             "PTR"] = toc >= 120105,
-	[         "Vanilla"] = toc < 16000,
-	[         "Forever"] = toc >= 16000 and toc < 20000,
-	[  "BurningCrusade"] = toc >= 20000 and toc < 30000,
-	[           "Wrath"] = toc >= 30000 and toc < 40000,
-	[   "TitanReforged"] = toc >= 38000 and toc < 40000,
-	[       "Cataclysm"] = toc >= 40000 and toc < 50000,
-	[           "Mists"] = toc >= 50000 and toc < 60000,
-	[        "Warlords"] = toc >= 60000 and toc < 70000,
-	[          "Legion"] = toc >= 70000 and toc < 80000,
-	["BattleForAzeroth"] = toc >= 80000 and toc < 90000,
-	[     "Shadowlands"] = toc >= 90000 and toc < 100000,
-	[    "Dragonflight"] = toc >= 100000 and toc < 110000,
-	[       "WarWithin"] = toc >= 110000 and toc < 120000,
-	[        "Midnight"] = toc >= 120000 and toc < 130000,
-	[       "LastTitan"] = toc >= 130000 and toc < 140000,
-}
+do
+	local _, _, _, toc = GetBuildInfo()
+	addon.GAMEVERSION = {
+		[         "Vanilla"] = toc < 16000,
+		[         "Forever"] = toc >= 16000 and toc < 20000,
+		[  "BurningCrusade"] = toc >= 20000 and toc < 30000,
+		[           "Wrath"] = toc >= 30000 and toc < 40000,
+		[   "TitanReforged"] = toc >= 38000 and toc < 40000,
+		[       "Cataclysm"] = toc >= 40000 and toc < 50000,
+		[           "Mists"] = toc >= 50000 and toc < 60000,
+		[        "Warlords"] = toc >= 60000 and toc < 70000,
+		[          "Legion"] = toc >= 70000 and toc < 80000,
+		["BattleForAzeroth"] = toc >= 80000 and toc < 90000,
+		[     "Shadowlands"] = toc >= 90000 and toc < 100000,
+		[    "Dragonflight"] = toc >= 100000 and toc < 110000,
+		[       "WarWithin"] = toc >= 110000 and toc < 120000,
+		[        "Midnight"] = toc >= 120000 and toc < 130000,
+		[       "LastTitan"] = toc >= 130000 and toc < 140000,
+		-- keep retail as its own entry
+		[        "Standard"] = toc >= 120000,
+	}
+end
 
 ------------
 -- EVENTS --

@@ -7,22 +7,29 @@ local ipairs = _G.ipairs
 local next = _G.next
 
 -- Mine
-local DEFAULT_PRESET
-local defaultIndex = 0
-if C_EditMode.GetEditModeDefaultLayout then
-	defaultIndex = C_EditMode.GetEditModeDefaultLayout()
-elseif Constants.EditModeLayoutConsts then
-	defaultIndex = Constants.EditModeLayoutConsts.EditModeDefaultLayout
-end
+do
+	local DEFAULT_PRESET
+	local defaultIndex = 0
 
-for k, v in next, Enum.EditModePresetLayouts do
-	if v == defaultIndex then
-		DEFAULT_PRESET = k
+	if C_EditMode.GetEditModeDefaultLayout then
+		defaultIndex = C_EditMode.GetEditModeDefaultLayout()
+	elseif Constants.EditModeLayoutConsts then
+		defaultIndex = Constants.EditModeLayoutConsts.EditModeDefaultLayout
+	end
+
+	for k, v in next, Enum.EditModePresetLayouts do
+		if v == defaultIndex then
+			DEFAULT_PRESET = k
+		end
+	end
+
+	function addon:GetActiveLayoutName()
+		return LEM:GetActiveLayoutName() or DEFAULT_PRESET
 	end
 end
 
 function addon:GetLayout()
-	return C.db.profile.layouts[LEM:GetActiveLayoutName() or DEFAULT_PRESET]
+	return C.db.profile.layouts[addon:GetActiveLayoutName()]
 end
 
 function addon:GetDefaultLayout()
@@ -144,12 +151,12 @@ D.profile = {
 	},
 }
 
-D.char = {
-	travel_points = false,
-	endeavor = false,
-}
+D.char = {}
 
-if addon.GAMEVERSION.Forever then
+if addon.GAMEVERSION.Standard then
+	D.char.travel_points = false
+	D.char.endeavor = false
+elseif addon.GAMEVERSION.Forever then
 	D.profile.border.color = {r = 1, g = 0.76, b = 0.6, a = 1}
 
 	D.profile.layouts["*"].width = 1192
