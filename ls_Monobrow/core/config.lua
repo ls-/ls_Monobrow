@@ -120,7 +120,7 @@ function addon:CreateEditModeConfig()
 	end
 
 	function addon:UpdateLayoutSettings()
-		layoutCallback(LEM:GetActiveLayoutName())
+		layoutCallback(addon:GetActiveLayoutName())
 	end
 
 	LEM:RegisterCallback("layout", layoutCallback)

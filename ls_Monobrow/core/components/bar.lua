@@ -141,7 +141,7 @@ do
 				self[index]:UpdateXP()
 			end
 
-			if addon.GAMEVERSION.Midnight then
+			if addon.GAMEVERSION.Standard then
 				-- Travel Points
 				if C.db.char.travel_points then
 					if perksActivitiesInfoCache then
@@ -201,7 +201,7 @@ do
 				self[index]:UpdateReputation(data.name, data.reaction, data.currentReactionThreshold, data.nextReactionThreshold, data.currentStanding, data.factionID)
 			end
 
-			if addon.GAMEVERSION.Midnight then
+			if addon.GAMEVERSION.Standard then
 				-- Azerite
 				if not C_AzeriteItem.IsAzeriteItemAtMaxLevel() then
 					local azeriteItem = C_AzeriteItem.FindActiveAzeriteItem()

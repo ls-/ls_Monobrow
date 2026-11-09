@@ -31,7 +31,7 @@ local function getLayoutList()
 		end
 	end
 
-	layouts[LEM:GetActiveLayoutName()] = nil
+	layouts[addon:GetActiveLayoutName()] = nil
 
 	return layouts
 end
@@ -73,10 +73,10 @@ function addon.LayoutManager:GetOptionsTable(order)
 				order = 12,
 				type = "execute",
 				name = function()
-					return L["RESET_LAYOUT"]:format(LEM:GetActiveLayoutName())
+					return L["RESET_LAYOUT"]:format(addon:GetActiveLayoutName())
 				end,
 				func = function()
-					wipe(LEM:GetActiveLayoutName())
+					wipe(addon:GetActiveLayoutName())
 
 					addon:UpdateLayoutSettings()
 				end,
@@ -98,7 +98,7 @@ function addon.LayoutManager:GetOptionsTable(order)
 				name = _G.CALENDAR_COPY_EVENT,
 				get = false,
 				set = function(_, value)
-					local name = LEM:GetActiveLayoutName()
+					local name = addon:GetActiveLayoutName()
 					wipe(name)
 
 					addon:CopyTable(C.db.profile.layouts[value], C.db.profile.layouts[name])

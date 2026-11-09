@@ -1,5 +1,5 @@
 local addonName, addon = ...
-local C, D, L, LEM = addon.C, addon.D, addon.L, addon.LibEditMode
+local C, D, L = addon.C, addon.D, addon.L
 
 -- Lua
 local _G = getfenv(0)
@@ -27,8 +27,8 @@ do
 			data.version = nil
 
 			-- only export the current layout
-			if LEM and next(data.layouts) then
-				local layoutName = LEM:GetActiveLayoutName()
+			if data.layouts and next(data.layouts) then
+				local layoutName = addon:GetActiveLayoutName()
 				if layoutName then
 					for name in next, data.layouts do
 						if name ~= layoutName then
@@ -43,13 +43,17 @@ do
 			addon:CopyTable(C.db.profile.layouts, data.layouts)
 			addon:DiffTable(data.layouts, D.profile.layouts)
 
-			local layoutName = LEM:GetActiveLayoutName()
-			if layoutName then
-				for name in next, data.layouts do
-					if name ~= layoutName then
-						data.layouts[name] = nil
+			if next(data.layouts) then
+				local layoutName = addon:GetActiveLayoutName()
+				if layoutName then
+					for name in next, data.layouts do
+						if name ~= layoutName then
+							data.layouts[name] = nil
+						end
 					end
 				end
+			else
+				data.layouts = nil
 			end
 		end
 
@@ -96,7 +100,7 @@ do
 					if layout then
 						t_wipe(data.layouts)
 
-						data.layouts[LEM:GetActiveLayoutName()] = layout
+						data.layouts[addon:GetActiveLayoutName()] = layout
 					end
 				end
 
@@ -110,7 +114,7 @@ do
 					if layout then
 						t_wipe(data.layouts)
 
-						data.layouts[LEM:GetActiveLayoutName()] = layout
+						data.layouts[addon:GetActiveLayoutName()] = layout
 					end
 				end
 
@@ -121,12 +125,12 @@ do
 		elseif dataType == "layout" then
 			local _, newLayout = next(data.layouts)
 			if newLayout then
-				local curLayout = C.db.profile.layouts[LEM:GetActiveLayoutName()]
+				local curLayout = C.db.profile.layouts[addon:GetActiveLayoutName()]
 				for k in next, curLayout do
 					t_wipe(curLayout[k])
 				end
 
-				addon:CopyTable(newLayout, C.db.profile.layouts[LEM:GetActiveLayoutName()])
+				addon:CopyTable(newLayout, C.db.profile.layouts[addon:GetActiveLayoutName()])
 				addon:UpdateLayoutSettings()
 			end
 

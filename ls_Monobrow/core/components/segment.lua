@@ -240,7 +240,7 @@ do
 		self:Update(cur, max, 0, C.db.global.colors.reaction[standing])
 	end
 
-	if addon.GAMEVERSION.Midnight then
+	if addon.GAMEVERSION.Standard then
 		local HONOR_TEMPLATE = _G.LFG_LIST_HONOR_LEVEL_CURRENT_PVP:gsub("%%d", "|cffffffff%%d|r")
 
 		function segment_ext_proto:UpdateHonor()
